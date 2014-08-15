@@ -10,6 +10,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import com.kamengoranchev.singmaster.R;
+
+import bg.singmaster.backend.AudioProcessor;
+import bg.singmaster.backend.Parameters;
 import bg.singmaster.gui.util.SystemUiHider;
 
 
@@ -49,11 +52,17 @@ public class MainActivity extends Activity {
     private SystemUiHider mSystemUiHider;
     
     public GraphView mVoiceGraph; 
+    
+    public AudioProcessor mAudioProcessor; 
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        
+        mAudioProcessor = new AudioProcessor(Parameters.SAMPLE_RATE);
+        
+        // the rest is GUI
         setContentView(R.layout.activity_main);
         
         final View controlsView = findViewById(R.id.fullscreen_content_controls);

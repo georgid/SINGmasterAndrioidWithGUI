@@ -3,16 +3,22 @@ package com.kamengoranchev.singmaster;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import bg.singmaster.backend.AudioProcessor;
+
 import com.kamengoranchev.singmaster.R;
 
 public class OnRecordListener implements View.OnClickListener {
 
 	MainActivity mMainActivity;
 	int duration = 3000; 
+	// initial wait time
 	int waitTime = 1000;
-	int numNotes = 3; 
+	int numNotes = 3;
+	
+	
 	
 	public OnRecordListener(MainActivity mainActivity){
 	this.mMainActivity = mainActivity;	
@@ -33,7 +39,8 @@ public class OnRecordListener implements View.OnClickListener {
             }
         }, waitTime);
         
-        // record : TODO
+        // record 
+        mMainActivity.mAudioProcessor.record();
         
         // visualize notes 
         timer.schedule(new TimerTask() {
@@ -57,11 +64,15 @@ public class OnRecordListener implements View.OnClickListener {
             }
         }, waitTime + 3*duration/numNotes);
         
-        // stop recording after duration t TODO
         
-        //  store audio TODO
+        // wait for recording to finish
+		while (mMainActivity.mAudioProcessor.mIsRecording)
+		{}
+		Log.i("TAG", "recording finished");	
         
-        // enable play button
+		//  store audio TODO
+        
+        // enable play button TODO
     
 	}	
 

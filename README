@@ -1,0 +1,15 @@
+
+GUI works, but is partly hardcoded. 
+
+recording from mic works. 
+
+pitch extraction works and is done realtime. 
+
+tested under sdk 16 (4.1)
+
+TODOS: 
+1) visualization of contour does not completed. in OnPLayListener.
+2) playback not worked on at all.  in OnPLayListener and OnRecordListener
+
+3) get timestamps. 
+4) test with different algortihms and sample rates.  

@@ -36,7 +36,7 @@ public class AudioProcessor {
 	
 	private be.hogent.tarsos.dsp.AudioFormat mTarsosFormat;
 	
-	private PitchExtractor mPitchExtractor; 
+	public PitchExtractor mPitchExtractor; 
 	
 	// in seconds
 	public final static double mRecordingDuration = 10.0; 
@@ -85,10 +85,7 @@ public class AudioProcessor {
 		processAudio();
 		
 		
-		// wait while recording
-				while (this.mIsRecording)
-				{}
-		Log.i("TAG", "recording finished");		
+			
 		
 		
 	}
