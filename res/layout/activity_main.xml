@@ -1,0 +1,229 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    tools:context=".MainActivity">
+
+    <!-- The primary full-screen view. This can be replaced with whatever view
+         is needed to present your content, e.g. VideoView, SurfaceView,
+         TextureView, etc. -->
+    <RelativeLayout
+        android:id="@+id/fullscreen_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_margin="10dp"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/control_pane"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/btn_record"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="REC" />
+
+            <Button
+                android:id="@+id/btn_play"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/btn_record"
+                android:text="PLAY" />
+
+            <SeekBar
+                android:id="@+id/skb_tempo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:minWidth="100dp"/>
+
+            <TextView
+                style="@style/GeneralText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/skb_tempo"
+                android:text="@string/tempo_label"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"/>
+
+        </RelativeLayout>
+
+        <TableLayout
+            android:id="@+id/grid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/black"
+            android:divider="@color/black"
+            android:showDividers="middle"
+            android:layout_alignParentTop="true"
+            android:stretchColumns="1, 2, 3"
+            android:layout_above="@id/control_pane">
+
+            <TableRow
+                style="@style/TableRaw"
+                android:layout_weight="1.0"
+                android:background="@color/white">
+
+                <TextView
+                    style="@style/Numbers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:text="8" />
+            </TableRow>
+
+            <TableRow
+                style="@style/TableRaw"
+                android:layout_weight="1.0">
+
+                <TextView
+                    style="@style/Numbers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="7" />
+            </TableRow>
+
+            <TableRow
+                style="@style/TableRaw"
+                android:layout_weight="1.0">
+
+                <TextView
+                    style="@style/Numbers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="6" />
+            </TableRow>
+
+            <TableRow
+                style="@style/TableRaw"
+                android:layout_weight="1.0">
+
+                <TextView
+                    style="@style/Numbers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="5" />
+
+                <LinearLayout />
+
+                <LinearLayout />
+
+                <TextView
+                    style="@style/Button"
+                    android:id="@+id/note_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+            </TableRow>
+
+            <TableRow
+                style="@style/TableRaw"
+                android:layout_weight="1.0">
+
+                <TextView
+                    style="@style/Numbers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="4" />
+            </TableRow>
+
+            <TableRow
+                style="@style/TableRaw"
+                android:layout_weight="1.0">
+
+                <TextView
+                    style="@style/Numbers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3" />
+
+                <LinearLayout />
+
+                <TextView
+                    android:id="@+id/note_2"
+                    style="@style/Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_column="2" />
+            </TableRow>
+
+            <TableRow
+                style="@style/TableRaw"
+                android:layout_weight="1.0">
+
+                <TextView
+                    style="@style/Numbers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2" />
+            </TableRow>
+
+            <TableRow
+                style="@style/TableRaw"
+                android:layout_weight="1.0">
+
+                <TextView
+                    style="@style/Numbers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1" />
+
+                <TextView
+                    android:id="@+id/note_1"
+                    style="@style/Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+            </TableRow>
+        </TableLayout>
+
+
+        <uk.ac.cam.cl.dtg.snowdon.AreaGraphView
+            android:id="@+id/voice_graph"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/control_pane"
+            android:background="#00000000"
+            app:graph_line_colour="@color/black_overlay"
+            app:graph_axes_colour="#00000000"
+            app:graph_bottom_padding="0"
+            app:graph_ascending_colour="@color/black_overlay"
+            app:graph_descending_colour="@color/black_overlay"
+            android:visibility="visible"/>
+
+
+
+    </RelativeLayout>
+    <!-- This FrameLayout insets its children based on system windows using
+         android:fitsSystemWindows. -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:id="@+id/fullscreen_content_controls"
+            style="?metaButtonBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:background="@color/black_overlay"
+            android:orientation="horizontal"
+            tools:ignore="UselessParent">
+
+            <Button
+                android:id="@+id/dummy_button"
+                style="?metaButtonBarButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+    </FrameLayout>
+
+
+</FrameLayout>

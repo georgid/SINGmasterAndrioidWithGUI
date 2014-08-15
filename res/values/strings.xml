@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Sing Master</string>
+    <string name="tempo_label">Tempo</string>
+    <string name="NS">http://schemas.android.com/apk/res/com.kamengoranchev.singmaster"</string>
+
+</resources>
