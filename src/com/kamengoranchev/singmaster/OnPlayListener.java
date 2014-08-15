@@ -1,4 +1,4 @@
-package bg.singmaster.gui.main;
+package com.kamengoranchev.singmaster;
 
 import android.view.*;
 

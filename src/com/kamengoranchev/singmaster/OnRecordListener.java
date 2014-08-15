@@ -1,18 +1,18 @@
-package bg.singmaster.gui.main;
+package com.kamengoranchev.singmaster;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.kamengoranchev.singmaster.R;
-
-import android.app.Activity;
 import android.view.View;
 import android.widget.TextView;
+import com.kamengoranchev.singmaster.R;
 
 public class OnRecordListener implements View.OnClickListener {
 
 	MainActivity mMainActivity;
-	int duration; 
+	int duration = 3000; 
+	int waitTime = 1000;
+	int numNotes = 3; 
 	
 	public OnRecordListener(MainActivity mainActivity){
 	this.mMainActivity = mainActivity;	
@@ -31,7 +31,7 @@ public class OnRecordListener implements View.OnClickListener {
             public void run() {
                 enableNote(0);
             }
-        }, 1000);
+        }, waitTime);
         
         // record : TODO
         
@@ -41,21 +41,21 @@ public class OnRecordListener implements View.OnClickListener {
             public void run() {
                 enableNote(1);
             }
-        }, 2000);
+        }, waitTime + 1*duration/numNotes );
 
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
                 enableNote(2);
             }
-        }, 3000);
+        }, waitTime + 2*duration/numNotes);
 
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
                 enableNote(3);
             }
-        }, 4000);
+        }, waitTime + 3*duration/numNotes);
         
         // stop recording after duration t TODO
         
@@ -74,7 +74,7 @@ public class OnRecordListener implements View.OnClickListener {
 	    this.mMainActivity.runOnUiThread(new Runnable() {
 	        @Override
 	        public void run() {
-	            for (int i = 0; i < 3; i++) {
+	            for (int i = 0; i < numNotes; i++) {
 	                notes[i].setEnabled(noteNumber == i);
 	            }
 	        }
