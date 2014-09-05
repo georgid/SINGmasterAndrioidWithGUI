@@ -1,13 +1,11 @@
-package bg.singmaster.gui.main;
+package bg.singmaster;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.kamengoranchev.singmaster.R;
-
-import android.app.Activity;
 import android.view.View;
 import android.widget.TextView;
+import bg.singmaster.R;
 
 public class OnRecordListener implements View.OnClickListener {
 

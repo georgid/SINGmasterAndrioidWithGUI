@@ -1,9 +1,6 @@
-package bg.singmaster.gui.main;
+package bg.singmaster;
 
-import bg.singmaster.gui.util.SystemUiHider;
-
-import com.kamengoranchev.singmaster.R;
-
+import uk.ac.cam.cl.dtg.snowdon.GraphView;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.os.Build;
@@ -12,13 +9,8 @@ import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
-
-import java.sql.Time;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import uk.ac.cam.cl.dtg.snowdon.GraphView;
+import bg.singmaster.R;
+import bg.singmaster.gui.util.SystemUiHider;
 
 
 /**
