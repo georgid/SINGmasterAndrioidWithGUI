@@ -1,15 +1,38 @@
 
-GUI works, but is partly hardcoded. 
 
-recording from mic works. 
+This is current version of SING-master prototype for android. 
+For more info about the idea of the project refer to:
+https://www.facebook.com/SINGmasterapp/info
 
-pitch extraction works and is done realtime. 
+-----------------------------------------
+STATUS:
+recording from mic works. pitch extraction works and is done realtime. 
+tested under sdk 16 (4.1) with device emulator
 
-tested under sdk 16 (4.1)
+-------------------------------------------------
+PROBLEMS: 
 
-TODOS: 
-1) visualization of contour does not completed. in OnPLayListener.
-2) playback not worked on at all.  in OnPLayListener and OnRecordListener
+To have impression of real-time speed do "run" instead of "debug"
 
-3) get timestamps. 
-4) test with different algortihms and sample rates.  
+
+GUI  animation works but timing of color bars is not precise. it has not set priority: only runOnUiThread()
+ audio recording thread has setThreadPriority(URGENT_AUDIO)
+
+each pitch extraction buffer run in separate thread.  
+Pitch extraction works with AMDF alg from
+http://0110.be/posts/TarsosDSP_on_Android_-_Audio_Processing_in_Java_on_Android
+(PitchDetector example here: https://github.com/srubin/TarsosDSP)
+But is VEEEERY slow! 
+
+
+-------------------------
+DOCUMENTATION: 
+
+The class 
+/com.kamengoranchev.singmaster.MainActivity/src/bg/singmaster/backend/Parameters.java
+holds settings of how long the exercise should be. 
+
+
+
+main recording logic in:
+ bg.singmaster.backend.AudioProcessor.record()

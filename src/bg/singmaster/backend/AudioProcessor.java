@@ -26,30 +26,38 @@ import android.util.Log;
 */
 public class AudioProcessor {
 	
+	// in bytes
 	private int mBufferSize;
-	private byte[] mBuffer;
+	private byte[] mCurrentBuffer;
+	
+	private int mNumSamplesPerBuffer;
 	
 	private AudioRecord mRecorder;
-	private int mSampleRate;
+	public int mSampleRate;
 	
 	public boolean mIsRecording = false;
+	public boolean mIsAllAudioProcessed = false;
 	
 	private be.hogent.tarsos.dsp.AudioFormat mTarsosFormat;
 	
 	public PitchExtractor mPitchExtractor; 
 	
 	// in seconds
-	public final static double mRecordingDuration = 10.0; 
+	public int mLastWindowNum = -1;
 	
 	
 	
+	/**
+	 * constructor
+	 * */
 	public AudioProcessor(int sampleRate) {
 		mSampleRate = sampleRate;
 		
-		mBufferSize = AudioRecord.getMinBufferSize(mSampleRate, AudioFormat.CHANNEL_IN_MONO,
+		// in bytes 
+		mBufferSize =  AudioRecord.getMinBufferSize(mSampleRate, AudioFormat.CHANNEL_IN_MONO,
 				AudioFormat.ENCODING_PCM_16BIT);
 		
-		mBuffer = new byte[mBufferSize];
+		mCurrentBuffer = new byte[mBufferSize];
 		
 		mRecorder = new AudioRecord(MediaRecorder.AudioSource.MIC,
 				mSampleRate,
@@ -57,10 +65,13 @@ public class AudioProcessor {
 				AudioFormat.ENCODING_PCM_16BIT,
 				mBufferSize);
 		
+		if (mRecorder.getAudioFormat() == AudioFormat.ENCODING_PCM_16BIT)
+		mNumSamplesPerBuffer  = mBufferSize / 2;
+				
 		mTarsosFormat = new be.hogent.tarsos.dsp.AudioFormat(
 				(float)mSampleRate, 16, 1, true, false);
 		
-		mPitchExtractor = new PitchExtractor(mSampleRate, mBufferSize);
+		mPitchExtractor = new PitchExtractor(mSampleRate, mNumSamplesPerBuffer);
 		
 		
 	}
@@ -82,11 +93,14 @@ public class AudioProcessor {
 		
 		mRecorder.startRecording();
 		mIsRecording  = true;
-		processAudio();
+		
+		Thread audioProcessingThread = new Thread(new AudioProcessingThread());
+		audioProcessingThread.start();
 		
 		
-			
+	
 		
+	
 		
 	}
 	
@@ -95,51 +109,81 @@ public class AudioProcessor {
 	/**
 	 * record and call pitch extraction
 	 * */
-	private void processAudio() {
-		Thread audioProcessingThread = new Thread(new AudioProcessingThread());
-		audioProcessingThread.start();
-	}
-	
-	/**
-	 *  thread with not file recording
-	 * **/
 	public class AudioProcessingThread implements Runnable{
 
 		@Override
 		public void run() {
 			 // We're important...
 		    	android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_URGENT_AUDIO);
-		    
-		    		Date start = new Date();
-		    	    Date end = new Date();  
-		        // let record for some seconds
-		    	 while (end.getTime() - start.getTime() < AudioProcessor.mRecordingDuration * 1000) {
+		    		
+		    	int currWindowNUmber = 1;	
+		     	
+		    	    
+		        // let record all samples before all gone
+		    	//FIXME: this while  might not be true if num bytes read is differnt from mBufferSize
+		    	 while ( (currWindowNUmber - 1) * mNumSamplesPerBuffer < Parameters.RECORDING_DURATION * mSampleRate) {
 		    		 
-		    	 
-			
-				int bufferReadResult = mRecorder.read(mBuffer, 0, mBufferSize);
-				AudioEvent audioEvent = new AudioEvent(mTarsosFormat, bufferReadResult);
-				audioEvent.setFloatBufferWithByteBuffer(mBuffer);
-				
-				Date timeBefore = new Date();
-				mPitchExtractor.mPitchProcessor.process(audioEvent);
-				Date timeAfter = new Date();
-				Log.i(AudioProcessor.class.getName(), String.valueOf(end.getTime() - start.getTime() ) );
-				
-				// update time. Time for processing included in counting. not good
-				end = new Date();
-				
-			}	
+			    	//record
+					int currNumBytesRead = mRecorder.read(mCurrentBuffer, 0,  mBufferSize);
+					
+					Log.i(AudioProcessingThread.class.getName(),  " recorded wind " + currWindowNUmber + "with " + currNumBytesRead + "bytes"   );
+
+					
+					// extract pitch
+					Thread pitchDetectThread = new Thread(new PitchDetectionThread(currNumBytesRead / 2, currWindowNUmber));
+					pitchDetectThread.start();
+					
+					// update 
+					currWindowNUmber++;
+					
+				}	
 		    	 // trigger stop of recording process
 		    	 mRecorder.stop();
 		    	 mIsRecording = false;
+		    	 mLastWindowNum = currWindowNUmber -1;
 			
 		
 		}// end run
 	
 	} // end AudioProcessigThread
 	
+	/**
+	 * pitch extraction for each time window in separate thread. 
+	 * */
+	public class PitchDetectionThread implements Runnable{
 	
+	//num bytes read
+	int mNumBytesRead;
+	//  which is current time window 
+	int mCurrWindowNumber;
+	
+	public PitchDetectionThread(int numBytesRead, int currWindowNUmber){
+		this.mNumBytesRead = numBytesRead;
+		this.mCurrWindowNumber = currWindowNUmber;
+	}
+	
+		@Override
+		public void run() {
+			
+	    	android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
+
+			// time only for DEBUG purpose
+			Date timeBefore = new Date();
+			
+			AudioEvent audioEvent = new AudioEvent(mTarsosFormat, this.mNumBytesRead / (mTarsosFormat.getSampleSizeInBits() / 8) );
+			audioEvent.setFloatBufferWithByteBuffer(mCurrentBuffer);
+
+			
+			mPitchExtractor.mPitchProcessor.process(audioEvent);
+			
+			Date timeAfter = new Date();
+			Log.i(PitchDetectionThread.class.getName(),  " currwindow " + this.mCurrWindowNumber +  ": time to process pitch window: " + String.valueOf(timeAfter.getTime() - timeBefore.getTime() ) );
+			
+			// if last window is processed , set flag
+			if ( this.mCurrWindowNumber == mLastWindowNum)
+				mIsAllAudioProcessed = true;
+			
+		}}
 	
 
 }

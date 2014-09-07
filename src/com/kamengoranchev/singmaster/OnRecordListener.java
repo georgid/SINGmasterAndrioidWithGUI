@@ -7,15 +7,16 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import bg.singmaster.backend.AudioProcessor;
+import bg.singmaster.backend.Parameters;
 
 import com.kamengoranchev.singmaster.R;
 
 public class OnRecordListener implements View.OnClickListener {
 
 	MainActivity mMainActivity;
-	int duration = 3000; 
-	// initial wait time
-	int waitTime = 1000;
+	
+	
+	
 	int numNotes = 3;
 	
 	
@@ -24,58 +25,61 @@ public class OnRecordListener implements View.OnClickListener {
 	this.mMainActivity = mainActivity;	
 		
 	}
+	
+	
 	@Override
 	public void onClick(View v) {
 
         this.mMainActivity.mVoiceGraph.setVisibility(View.INVISIBLE);
         // get duration t from tempo control TODO
         
-        // wait 1 sec. give time to singer to prepare
+        // wait some time. allow time to singer to prepare
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                enableNote(0);
-            }
-        }, waitTime);
-        
-        // record 
-        mMainActivity.mAudioProcessor.record();
-        
-        // visualize notes 
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                enableNote(1);
-            }
-        }, waitTime + 1*duration/numNotes );
+                
+            	enableNote(0);
 
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                enableNote(2);
+            	// start recording
+                mMainActivity.mAudioProcessor.record();
             }
-        }, waitTime + 2*duration/numNotes);
-
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                enableNote(3);
-            }
-        }, waitTime + 3*duration/numNotes);
+        }, Parameters.INITIAL_WAIT_TIME * 1000);
         
+
+        
+        // highlight other notes from exercise
+        for (int noteNum = 1;  noteNum <= this.numNotes; noteNum ++)
+       
+        	timer.schedule( 
+        			new NoteTimerTask(noteNum),
+        		 Parameters.INITIAL_WAIT_TIME  * 1000 + noteNum * Parameters.RECORDING_DURATION * 1000/numNotes );
+
+      
+      
         
         // wait for recording to finish
-		while (mMainActivity.mAudioProcessor.mIsRecording)
-		{}
-		Log.i("TAG", "recording finished");	
+//		while (mMainActivity.mAudioProcessor.mIsRecording)
+//		{}
+//		Log.i("TAG", "recording finished");	
+		
+        
+		// wait  while all pitch extracted
+//		while (!this.mIsAllAudioProcessed)
+//		{}
+//		Log.i("TAG", "pitch extraction finished");	
+        
         
 		//  store audio TODO
         
         // enable play button TODO
     
 	}	
-
+	
+	
+	/**
+	 * visualize color for one note 
+	 * */
 	private void enableNote(final int noteNumber) {
 	    final TextView[] notes = new TextView[3];
 	    notes[0] = (TextView) this.mMainActivity.findViewById(R.id.note_1);
@@ -91,6 +95,23 @@ public class OnRecordListener implements View.OnClickListener {
 	        }
 	    });
 	}
+	
+	
+	public class NoteTimerTask extends TimerTask{
+	
+	private int mWhichNote;
+	
+	public NoteTimerTask(int whichNote){
+	this.mWhichNote = whichNote; 
+	} 
+		@Override
+		public void run() {
+            enableNote(mWhichNote);
+			
+		}
+		
+	}
+
 	
 	
 	

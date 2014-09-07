@@ -8,15 +8,26 @@ import be.hogent.tarsos.dsp.pitch.PitchDetectionHandler;
 import be.hogent.tarsos.dsp.pitch.PitchDetectionResult;
 import be.hogent.tarsos.dsp.pitch.PitchProcessor;
 
+/**
+ * handles processing related to detection of pitch 
+ * 
+ * */
 public class PitchExtractor implements PitchDetectionHandler {
-
+	
+	// external module for pitch extraction
 	public PitchProcessor mPitchProcessor;
 	
+	// holder of curr pitch info
 	DetectedPitch mCurrDetectedPitch;
 	
+	// holder of sequence of extracted pitch values
 	public ArrayList<DetectedPitch> mDetectedPitchArray;
 	
-	public PitchExtractor(int sampleRate, int bufferSize){
+	
+	/**
+	 * constructor. which pitch detection algorithm
+	 * */
+	public PitchExtractor(int sampleRate, int bufferSizeInSamples){
 		PitchProcessor.PitchEstimationAlgorithm alg = 
 				PitchProcessor.PitchEstimationAlgorithm.AMDF;
 		
@@ -25,8 +36,7 @@ public class PitchExtractor implements PitchDetectionHandler {
 		
 		
 		
-		mPitchProcessor = new PitchProcessor(alg, sampleRate, bufferSize, this);
-		
+		mPitchProcessor = new PitchProcessor(alg, sampleRate, bufferSizeInSamples, this);
 		
 	}
 	
@@ -44,6 +54,7 @@ public class PitchExtractor implements PitchDetectionHandler {
 		}
 	
 		mCurrDetectedPitch = new DetectedPitch(currPitch, currTs );
+		// array initialized on press of record button
 		this.mDetectedPitchArray.add(mCurrDetectedPitch);
 		
 		Log.i("TAG", "pitch is " + currPitch);
