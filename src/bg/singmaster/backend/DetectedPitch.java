@@ -1,5 +1,9 @@
 package bg.singmaster.backend;
 
+
+/**
+ * Holds b
+*/
 public class DetectedPitch {
 
 	public float mPitchHz;

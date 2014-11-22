@@ -47,6 +47,7 @@ public class AudioProcessor {
 	
 	
 	
+	
 	/**
 	 * constructor
 	 * */
@@ -117,6 +118,7 @@ public class AudioProcessor {
 		    	android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_URGENT_AUDIO);
 		    		
 		    	int currWindowNUmber = 1;	
+		    	int totalNumBytesProcessed = 0;
 		     	
 		    	    
 		        // let record all samples before all gone
@@ -126,11 +128,15 @@ public class AudioProcessor {
 			    	//record
 					int currNumBytesRead = mRecorder.read(mCurrentBuffer, 0,  mBufferSize);
 					
+					totalNumBytesProcessed += currNumBytesRead;
+
+					
+					
 					Log.i(AudioProcessingThread.class.getName(),  " recorded wind " + currWindowNUmber + "with " + currNumBytesRead + "bytes"   );
 
 					
 					// extract pitch
-					Thread pitchDetectThread = new Thread(new PitchDetectionThread(currNumBytesRead / 2, currWindowNUmber));
+					Thread pitchDetectThread = new Thread(new PitchDetectionThread(currNumBytesRead / 2, totalNumBytesProcessed, currWindowNUmber));
 					pitchDetectThread.start();
 					
 					// update 
@@ -154,12 +160,18 @@ public class AudioProcessor {
 	
 	//num bytes read
 	int mNumBytesRead;
+	
+	long mTotalNumBytesProcessed;
+	
 	//  which is current time window 
 	int mCurrWindowNumber;
 	
-	public PitchDetectionThread(int numBytesRead, int currWindowNUmber){
+	
+	public PitchDetectionThread(int numBytesRead, long totalNumBytesProcessed,  int currWindowNUmber){
 		this.mNumBytesRead = numBytesRead;
 		this.mCurrWindowNumber = currWindowNUmber;
+		this.mTotalNumBytesProcessed = totalNumBytesProcessed;
+		
 	}
 	
 		@Override
@@ -172,7 +184,7 @@ public class AudioProcessor {
 			
 			AudioEvent audioEvent = new AudioEvent(mTarsosFormat, this.mNumBytesRead / (mTarsosFormat.getSampleSizeInBits() / 8) );
 			audioEvent.setFloatBufferWithByteBuffer(mCurrentBuffer);
-
+			audioEvent.setBytesProcessed(mTotalNumBytesProcessed);
 			
 			mPitchExtractor.mPitchProcessor.process(audioEvent);
 			
