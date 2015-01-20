@@ -1,0 +1,65 @@
+
+-------------------------
+DESIGN CLASSES: 
+
+MainActivity: 
+Gui-MainActivity 
+------------------------
+
+field: 
+public AudioProcessor mAudioProcessor; 
+
+
+
+
+AudioProcessor
+----------------
+fields:
+
+PitchExtractor
+mRecorder - android's recording class
+DetectedArray
+
+ method record() - main recording logic: 
+
+1.start AudioProcessingThread. it puts put recorded chunks into a queue AudioProcessor.mQueueAudio. 
+
+2. Start  PitchExtractionThred. It processes mQueueAudio simultaneously. It puts pitch results into mDetectedPitchArray
+
+Once all from queue is extracted, runOnGuiThread.enablePlayButton !!!!   
+
+
+
+AudioProcessingThread
+----------------------
+Loop for each processed buffer of audio. 
+
+ 
+ 
+
+
+OnRecordListener
+-------------------
+field mainActivity
+int numNotes = 3;
+		
+	onClick(mainActivity.mAudioProcessor.record())
+
+
+ 
+ 
+ 
+
+The class 
+/com.kamengoranchev.singmaster.MainActivity/src/bg/singmaster/backend/Parameters.java
+holds settings of how long the exercise should be. 
+
+
+PitchExtractor 
+----------------
+ wrapper. calls pitch extraction logic which is in PitchProcessor field
+  handles processing related to detection of pitch 
+ 
+ 
+the field 
+mDetectedPitchArray - holds bucket of DetectedPitch entries.

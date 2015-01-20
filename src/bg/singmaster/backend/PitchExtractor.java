@@ -9,6 +9,7 @@ import be.hogent.tarsos.dsp.pitch.PitchDetectionResult;
 import be.hogent.tarsos.dsp.pitch.PitchProcessor;
 
 /**
+ * wrapper. calls pitch extraction logic which is in PitchProcessor field
  * handles processing related to detection of pitch 
  * 
  * */
@@ -17,8 +18,6 @@ public class PitchExtractor implements PitchDetectionHandler {
 	// external module for pitch extraction
 	public PitchProcessor mPitchProcessor;
 	
-	// holder of curr pitch info
-	DetectedPitch mCurrDetectedPitch;
 	
 	// holder of sequence of extracted pitch values
 	public ArrayList<DetectedPitch> mDetectedPitchArray;
@@ -46,6 +45,7 @@ public class PitchExtractor implements PitchDetectionHandler {
 	public void handlePitch(final PitchDetectionResult pitchDetectionResult,
 			AudioEvent audioEvent) {
 		float currPitch = 0;
+		
 		double currTs = audioEvent.getTimeStamp();
 		
 		if (pitchDetectionResult.isPitched()) {
@@ -53,9 +53,10 @@ public class PitchExtractor implements PitchDetectionHandler {
 			
 		}
 	
-		mCurrDetectedPitch = new DetectedPitch(currPitch, currTs );
+		DetectedPitch currDetectedPitch = new DetectedPitch(currPitch, currTs );
+		
 		// array initialized on press of record button
-		this.mDetectedPitchArray.add(mCurrDetectedPitch);
+		this.mDetectedPitchArray.add(currDetectedPitch);
 		
 		Log.i("TAG", "pitch is " + currPitch);
 		

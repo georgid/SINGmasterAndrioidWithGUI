@@ -51,7 +51,8 @@ public class MainActivity extends Activity {
      */
     private SystemUiHider mSystemUiHider;
     
-    public GraphView mVoiceGraph; 
+    public GraphView mVoiceGraph;
+    public Button mPlayButton;
     
     public AudioProcessor mAudioProcessor; 
     
@@ -122,11 +123,12 @@ public class MainActivity extends Activity {
 
 
         final Button buttonRecord = (Button) findViewById(R.id.btn_record);
-        final Button buttonPlay = (Button) findViewById(R.id.btn_play);
+        
+        this.mPlayButton = (Button) findViewById(R.id.btn_play);
 
         buttonRecord.setOnClickListener(new OnRecordListener(this)  );
 
-        buttonPlay.setOnClickListener(new OnPlayListener(this) );
+        this.mPlayButton.setOnClickListener(new OnPlayListener(this) );
     
     }
 

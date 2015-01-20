@@ -14,65 +14,54 @@ import com.kamengoranchev.singmaster.R;
 public class OnRecordListener implements View.OnClickListener {
 
 	MainActivity mMainActivity;
-	
-	
-	
 	int numNotes = 3;
-	
+	Timer mNoteTimer;
 	
 	
 	public OnRecordListener(MainActivity mainActivity){
 	this.mMainActivity = mainActivity;	
-		
+	this.mNoteTimer  = new Timer();
 	}
 	
 	
 	@Override
 	public void onClick(View v) {
-
-        this.mMainActivity.mVoiceGraph.setVisibility(View.INVISIBLE);
+		
+	   this.mMainActivity.runOnUiThread(new Runnable() {
+	        @Override
+	        public void run() {
+	            for (int i = 0; i < numNotes; i++) {
+	            	mMainActivity.mVoiceGraph.setVisibility(View.INVISIBLE);
+	                mMainActivity.mPlayButton.setEnabled(false);
+	            }
+	        }
+	    });
+	
+        
+        
         // get duration t from tempo control TODO
         
         // wait some time. allow time to singer to prepare
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
+        this.mNoteTimer.schedule(new TimerTask() {
             @Override
             public void run() {
                 
             	enableNote(0);
 
             	// start recording
-                mMainActivity.mAudioProcessor.record();
+                mMainActivity.mAudioProcessor.record(mMainActivity);
             }
         }, Parameters.INITIAL_WAIT_TIME * 1000);
         
 
         
-        // highlight other notes from exercise
+        // highlight the other notes from exercise
         for (int noteNum = 1;  noteNum <= this.numNotes; noteNum ++)
        
-        	timer.schedule( 
+        	this.mNoteTimer.schedule( 
         			new NoteTimerTask(noteNum),
         		 Parameters.INITIAL_WAIT_TIME  * 1000 + noteNum * Parameters.RECORDING_DURATION * 1000/numNotes );
 
-      
-      
-        
-        // wait for recording to finish
-//		while (mMainActivity.mAudioProcessor.mIsRecording)
-//		{}
-//		Log.i("TAG", "recording finished");	
-		
-        
-		// wait  while all pitch extracted
-//		while (!this.mIsAllAudioProcessed)
-//		{}
-//		Log.i("TAG", "pitch extraction finished");	
-        
-        
-		//  store audio TODO
-        
-        // enable play button TODO
     
 	}	
 	
@@ -96,7 +85,9 @@ public class OnRecordListener implements View.OnClickListener {
 	    });
 	}
 	
-	
+	/**
+	 * controls the timing to enable Note 
+	 * */
 	public class NoteTimerTask extends TimerTask{
 	
 	private int mWhichNote;
