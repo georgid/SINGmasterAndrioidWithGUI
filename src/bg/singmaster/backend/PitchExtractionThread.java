@@ -31,27 +31,41 @@ public PitchExtractionThread(MainActivity mainActivity){
 	
 	
 }
-
+	/**
+	 * extract pitch for each audioFrame  (buffer) in audio buffer. 
+	 * convert to pitchScale 
+	 * */
 	@Override
 	public void run() {
 		
     	android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
-
-		// process sequentially from queue:
-		while (!this.mAudioProcessor.mQueueAudio.isEmpty()){
+    	
+    	Log.i("TAG: ", "in PITCH EXTRACTION THREAD!");
+		
+    	
+		while (this.mAudioProcessor.mRecorder.getRecordingState() != this.mAudioProcessor.mRecorder.RECORDSTATE_STOPPED)
 			
-			byte [] currAudioBuffer = this.mAudioProcessor.mQueueAudio.poll();
 			
-			// time. only for DEBUG purpose
-			Date timeBefore = new Date();
-			
-			processSingleAudioBuffer(currAudioBuffer);
-
-			// time. only for DEBUG purpose
-			Date timeAfter = new Date();
-			Log.i(PitchExtractionThread.class.getName(),  ": time to process pitch window: " + String.valueOf(timeAfter.getTime() - timeBefore.getTime() ) );
-			
-		}
+			// if empty, but still recording, outer loop will get it here
+			// process sequentially from queue:
+			while (!this.mAudioProcessor.mQueueAudio.isEmpty()){
+	
+				Log.i("TAG: ", "PROCESSING QUEUE!");
+				
+				byte [] currAudioBuffer = this.mAudioProcessor.mQueueAudio.poll();
+				
+				// time. only for DEBUG purpose
+				Date timeBefore = new Date();
+				
+				processSingleAudioBuffer(currAudioBuffer);
+	
+				// time. only for DEBUG purpose
+				Date timeAfter = new Date();
+				Log.i(PitchExtractionThread.class.getName(),  ": time to process pitch window: " + String.valueOf(timeAfter.getTime() - timeBefore.getTime() ) );
+				
+				// convert to pitchScale: 
+	//			this.mAudioProcessor.mPitchExtractor.convertToPitchScale();
+			}
 		
 		
 		// last audio buffer is processed , set flag
@@ -78,6 +92,7 @@ public PitchExtractionThread(MainActivity mainActivity){
 		mTotalNumBytesProcessed += audioBuffer.length;
 		audioEvent.setBytesProcessed(mTotalNumBytesProcessed);
 		
+		// this calls internally mPitchExtractor.handlePitch
 		this.mAudioProcessor.mPitchExtractor.mPitchProcessor.process(audioEvent);
 
 	

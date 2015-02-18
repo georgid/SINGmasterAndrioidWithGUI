@@ -31,7 +31,7 @@ import com.kamengoranchev.singmaster.MainActivity;
 public class AudioProcessor {
 
 	// 	record form mic Logic 
-	private AudioRecord mRecorder;
+	public AudioRecord mRecorder;
 
 	public be.hogent.tarsos.dsp.AudioFormat mTarsosFormat;
 	public PitchExtractor mPitchExtractor; 
@@ -41,6 +41,8 @@ public class AudioProcessor {
 	
 	// in bytes
 	private int mBufferSize;
+	
+	
 	private byte[] mCurrentBuffer;
 	Queue<byte[]> mQueueAudio;
 	
@@ -63,9 +65,23 @@ public class AudioProcessor {
 	public AudioProcessor(int sampleRate) {
 		mSampleRate = sampleRate;
 		
+		// these are same
+		int audioFormat = AudioFormat.ENCODING_PCM_16BIT;
+		int numBytesPerSample = 2;
+		
+		mNumSamplesPerBuffer  = 512;
+		
 		// in bytes 
-		mBufferSize =  AudioRecord.getMinBufferSize(mSampleRate, AudioFormat.CHANNEL_IN_MONO,
-				AudioFormat.ENCODING_PCM_16BIT);
+		int minBufferSize =  AudioRecord.getMinBufferSize(mSampleRate, AudioFormat.CHANNEL_IN_MONO, audioFormat);
+		
+		mBufferSize = mNumSamplesPerBuffer * numBytesPerSample;
+		if (minBufferSize > mBufferSize){
+			mBufferSize = minBufferSize;
+			mNumSamplesPerBuffer = minBufferSize / numBytesPerSample;
+		}	
+		
+			
+		
 		
 		mCurrentBuffer = new byte[mBufferSize];
 		
@@ -75,8 +91,6 @@ public class AudioProcessor {
 				AudioFormat.ENCODING_PCM_16BIT,
 				mBufferSize);
 		
-		if (mRecorder.getAudioFormat() == AudioFormat.ENCODING_PCM_16BIT)
-		mNumSamplesPerBuffer  = mBufferSize / 2;
 				
 		mTarsosFormat = new be.hogent.tarsos.dsp.AudioFormat(
 				(float)mSampleRate, 16, 1, true, false);
@@ -106,8 +120,8 @@ public class AudioProcessor {
 		this.mQueueAudio = new LinkedList<byte[]>();
 		
 		// recording
-		Thread audioProcessingThread = new Thread(new AudioRecordingThread());
-		audioProcessingThread.start();
+		Thread audioRecordingThread = new Thread(new AudioRecordingThread());
+		audioRecordingThread.start();
 		
 		// start pitch extraction
 		Thread pitchExtractionThread = new Thread(new PitchExtractionThread(ma));
@@ -165,7 +179,7 @@ public class AudioProcessor {
 		    	 // trigger stop of recording process
 		    	 mRecorder.stop();
 		    	 mLastWindowNum = currWindowNUmber -1;
-			
+		    	 
 		
 		}// end run
 	

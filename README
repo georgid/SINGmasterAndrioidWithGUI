@@ -15,6 +15,9 @@ STATUS:
 recording from mic works. pitch extraction works and is done realtime. 
 tested under sdk 16 (4.1) with device emulator
 
+IMPORTANT: 
+we are using sample rate 8k which only supports in emulator. In device use samplerate to 44.1k for better quality.
+
 -------------------------------------------------
 
 DEBUGING: 
@@ -27,7 +30,6 @@ Eclipse-> virtual device manager -> start AVD4.1 -> mark "wipe user data" on Lau
 
 PROBLEMS: 
 
-THe Log.i does not display in eclipse logcat!
 
 GUI  animation works but timing of color bars is not precise. it has not set priority: only runOnUiThread()
  audio recording thread has setThreadPriority(URGENT_AUDIO)
@@ -35,6 +37,4 @@ GUI  animation works but timing of color bars is not precise. it has not set pri
 
 
 TarsosDSP is VEEEERY slow! 
-
-TODO: make sure recorded audio frames are in put in order into Queue  
 

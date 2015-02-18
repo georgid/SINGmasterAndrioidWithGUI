@@ -14,8 +14,9 @@ public AudioProcessor mAudioProcessor;
 
 AudioProcessor
 ----------------
-fields:
+Main app logic:
 
+fields:
 PitchExtractor
 mRecorder - android's recording class
 DetectedArray
@@ -24,7 +25,7 @@ DetectedArray
 
 1.start AudioProcessingThread. it puts put recorded chunks into a queue AudioProcessor.mQueueAudio. 
 
-2. Start  PitchExtractionThred. It processes mQueueAudio simultaneously. It puts pitch results into mDetectedPitchArray
+2. Start  PitchExtractionThred. It processes mQueueAudio simultaneously. puts extracted pitch into mDetectedPitchArray
 
 Once all from queue is extracted, runOnGuiThread.enablePlayButton !!!!   
 
@@ -46,14 +47,6 @@ int numNotes = 3;
 	onClick(mainActivity.mAudioProcessor.record())
 
 
- 
- 
- 
-
-The class 
-/com.kamengoranchev.singmaster.MainActivity/src/bg/singmaster/backend/Parameters.java
-holds settings of how long the exercise should be. 
-
 
 PitchExtractor 
 ----------------
@@ -63,3 +56,9 @@ PitchExtractor
  
 the field 
 mDetectedPitchArray - holds bucket of DetectedPitch entries.
+
+
+
+/com.kamengoranchev.singmaster.MainActivity/src/bg/singmaster/backend/Parameters.java
+-------------------------
+holds settings of how long the exercise should be. 

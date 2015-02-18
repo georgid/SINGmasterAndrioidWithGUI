@@ -53,5 +53,6 @@ SECONDARY :
 5.5) if  pitch extraction faster than recording, then Queue might be emptied before recording finished! 
 
 6) each exercise to be stored as a textFile which can be loaded in a separate class ExerciseLoader. It will be used in OnRecordListener()
+move int numNotes = 3; from OnRecordListener to ParametersExercise
 
 7) increase and test different buffer sizes. small buffer sizes might mean chances of not smooth reading
