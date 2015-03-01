@@ -5,9 +5,13 @@
 
 PRIMARY:
 
+when record pressed a msg : '''processing'''
+
 0.5) reset PitchExtractor.detectedPitchArray on press of record button
 
 0.6) assure correct sequence of pitch values in array DetectedPitchArray()
+
+
 
 
 1) player 
@@ -24,7 +28,9 @@ byte [] is part of the recorded audio: bg.singmaster.backend.PitchExtractor.mDet
 1.5) AudioPlayer.play() tone called on OnPLayListener
 where to put recorded buffers
 
-on cliCK clean contour from before
+tempo slider to work
+
+
 
 2) test under different processors. 
 Use logic from singMaster and put in com.kamen… 
@@ -35,22 +41,21 @@ take from bg.singmaster.backend.AudioProcessor.AudioProcessingThread
 
 how much Mhz are needed to ensure realtime recording with at most 3 seconds lag? 
 
-- test with Yin instead. 
-
-3) visualization of contour does not completed. in OnPLayListener.
 
 4) play buttons on left pane
 playback of example sounds. 
 
 
+- test with Yin instead. 
+
 ------------------------
 SECONDARY : 
 
-4.5) stop thread of pitch processing and recording if rec pressed before current rec finished  
+
 
 5) no hopping of windows . add hops 
 
-5.5) if  pitch extraction faster than recording, then Queue might be emptied before recording finished! 
+5.5) FLAW: if  pitch extraction faster than recording, then Queue might be emptied before recording finished! 
 
 6) each exercise to be stored as a textFile which can be loaded in a separate class ExerciseLoader. It will be used in OnRecordListener()
 move int numNotes = 3; from OnRecordListener to ParametersExercise

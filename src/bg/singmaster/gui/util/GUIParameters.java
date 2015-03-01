@@ -8,10 +8,10 @@ public class GUIParameters {
 	public static final int minTime = 0;
 	public static final float maxTime = (float) Parameters.RECORDING_DURATION;
 	
-	// -1 to see if below reference tone
-	public static final int minPitch = ParametersExercise.lowestNoteMIDI - 1;
+	// -1 semitone to see if below reference tone
+	public static final int minCutOffMIDInumber = ParametersExercise.noteMIDIs[0] - 1;
 	// HARD CODED: for one octave than lowest
-	// +1 to see if above reference tone
-	public static final int maxPitch = ParametersExercise.lowestNoteMIDI + 12 + 1;
+	// +1 semitone to see if above reference tone
+	public static final int maxCutOffMIDInumber = ParametersExercise.noteMIDIs[0] + 12 + 1;
 	
 }

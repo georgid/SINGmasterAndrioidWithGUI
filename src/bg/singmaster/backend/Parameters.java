@@ -1,7 +1,7 @@
 package bg.singmaster.backend;
 
 public class Parameters {
-
+	// recording sample rate
 	public static final int SAMPLE_RATE = 8000;
 	
 	// in seconds. depends on tempo

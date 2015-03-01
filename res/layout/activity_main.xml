@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity" >
 
     <!-- The primary full-screen view. This can be replaced with whatever view
          is needed to present your content, e.g. VideoView, SurfaceView,
@@ -166,17 +166,27 @@
                 style="@style/TableRaw"
                 android:layout_weight="1.0">
 
+             	<ImageButton
+				    android:id="@+id/btn_playSynth_1"
+				    style="@style/Numbers"
+				    android:layout_width="match_parent"
+				    android:layout_height="match_parent"
+				    android:background="@drawable/play_icon" />
+                
                 <TextView
                     style="@style/Numbers"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="1" />
-
+                
                 <TextView
                     android:id="@+id/note_1"
                     style="@style/Button"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent" />
+
+                
+
             </TableRow>
         </TableLayout>
 
@@ -190,20 +200,20 @@
             app:graph_line_colour="@color/black_overlay"
             app:graph_axes_colour="#00000000"
             app:graph_bottom_padding="0"
+            app:graph_left_padding="0"
             app:graph_ascending_colour="@color/black_overlay"
             app:graph_descending_colour="@color/black_overlay"
             android:visibility="visible"/>
 
-
-
     </RelativeLayout>
     <!-- This FrameLayout insets its children based on system windows using
          android:fitsSystemWindows. -->
+
     <FrameLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        android:visibility="gone">
+        android:visibility="gone" >
 
         <LinearLayout
             android:id="@+id/fullscreen_content_controls"

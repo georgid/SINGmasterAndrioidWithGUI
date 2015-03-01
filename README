@@ -13,10 +13,13 @@ http://0110.be/posts/TarsosDSP_on_Android_-_Audio_Processing_in_Java_on_Android
 -----------------------------------------
 STATUS:
 recording from mic works. pitch extraction works and is done realtime. 
-tested under sdk 16 (4.1) with device emulator
+tested under API LEVEL 16 (4.1) with device emulator
 
 IMPORTANT: 
 we are using sample rate 8k which only supports in emulator. In device use samplerate to 44.1k for better quality.
+
+SUPPORT for API LEVEL: 
+DialogFragment (class MessageDialog) requires API 11.
 
 -------------------------------------------------
 
@@ -26,6 +29,9 @@ if virtual devices does not start from eclipse, do:
 shell> emulator -avd AVD4.1
 or
 Eclipse-> virtual device manager -> start AVD4.1 -> mark "wipe user data" on Launch Setting   
+
+if emulator starts, but cannot be detected as running on subsequent launches do: 
+adb start-server
 
 
 PROBLEMS: 

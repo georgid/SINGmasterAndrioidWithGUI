@@ -48,7 +48,7 @@ public class AreaGraphView extends GraphView {
 	 */
 	public AreaGraphView(Context context, AttributeSet attributes) {
 		super(context, attributes);
-        mLeftPadding = 0;
+        mLeftPadding = 50;
         mRightPadding = 0;
         mBottomPadding = 0;
         mTopPadding = 0;

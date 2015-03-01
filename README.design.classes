@@ -23,7 +23,7 @@ DetectedArray
 
  method record() - main recording logic: 
 
-1.start AudioProcessingThread. it puts put recorded chunks into a queue AudioProcessor.mQueueAudio. 
+1.start AudioProcessingThread. it puts recorded chunks into a queue AudioProcessor.mQueueAudio. 
 
 2. Start  PitchExtractionThred. It processes mQueueAudio simultaneously. puts extracted pitch into mDetectedPitchArray
 

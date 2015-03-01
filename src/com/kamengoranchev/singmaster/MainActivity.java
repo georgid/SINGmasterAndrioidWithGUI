@@ -9,10 +9,13 @@ import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+
 import com.kamengoranchev.singmaster.R;
 
 import bg.singmaster.backend.AudioProcessor;
 import bg.singmaster.backend.Parameters;
+import bg.singmaster.backend.ParametersExercise;
 import bg.singmaster.gui.util.SystemUiHider;
 
 
@@ -53,6 +56,7 @@ public class MainActivity extends Activity {
     
     public GraphView mVoiceGraph;
     public Button mPlayButton;
+    public Button mRecButton;
     
     public AudioProcessor mAudioProcessor; 
     
@@ -122,13 +126,22 @@ public class MainActivity extends Activity {
         mVoiceGraph.setVisibility(View.INVISIBLE);
 
 
-        final Button buttonRecord = (Button) findViewById(R.id.btn_record);
+        this.mRecButton = (Button) findViewById(R.id.btn_record);
         
         this.mPlayButton = (Button) findViewById(R.id.btn_play);
+        
+        // TODO: array of buttons, depending on exercise
+        ImageButton playSynthButton1 = (ImageButton) findViewById(R.id.btn_playSynth_1);
+        playSynthButton1.setOnClickListener(new OnPlaySynthListener(ParametersExercise.noteMIDIs[0])  );
+        
 
-        buttonRecord.setOnClickListener(new OnRecordListener(this)  );
-
+        this.mRecButton.setOnClickListener(new OnRecordListener(this)  );
+        
         this.mPlayButton.setOnClickListener(new OnPlayListener(this) );
+        
+
+        
+        
     
     }
 

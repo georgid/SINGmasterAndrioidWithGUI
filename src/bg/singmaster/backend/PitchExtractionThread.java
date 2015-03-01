@@ -40,7 +40,7 @@ public PitchExtractionThread(MainActivity mainActivity){
 		
     	android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
     	
-    	Log.i("TAG: ", "in PITCH EXTRACTION THREAD!");
+//    	Log.i("TAG: ", "in PITCH EXTRACTION THREAD!");
 		
     	
 		while (this.mAudioProcessor.mRecorder.getRecordingState() != this.mAudioProcessor.mRecorder.RECORDSTATE_STOPPED)
@@ -50,7 +50,7 @@ public PitchExtractionThread(MainActivity mainActivity){
 			// process sequentially from queue:
 			while (!this.mAudioProcessor.mQueueAudio.isEmpty()){
 	
-				Log.i("TAG: ", "PROCESSING QUEUE!");
+//				Log.i("TAG: ", "PROCESSING QUEUE!");
 				
 				byte [] currAudioBuffer = this.mAudioProcessor.mQueueAudio.poll();
 				
@@ -73,6 +73,7 @@ public PitchExtractionThread(MainActivity mainActivity){
 			@Override
 			public void run(){
 			mMainActivity.mPlayButton.setEnabled(true);
+			mMainActivity.mRecButton.setEnabled(true);
 		}
 		
 		});

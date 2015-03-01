@@ -47,6 +47,7 @@ public class AudioProcessor {
 	Queue<byte[]> mQueueAudio;
 	
 	private int mNumSamplesPerBuffer;
+	public int numBytesPerSample;
 	
 	public int mSampleRate;
 	
@@ -67,7 +68,7 @@ public class AudioProcessor {
 		
 		// these are same
 		int audioFormat = AudioFormat.ENCODING_PCM_16BIT;
-		int numBytesPerSample = 2;
+		numBytesPerSample = 2;
 		
 		mNumSamplesPerBuffer  = 512;
 		
@@ -139,17 +140,26 @@ public class AudioProcessor {
 		public void run() {
 			 // We're important...
 		    	android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_URGENT_AUDIO);
-		    		
-		    	int currWindowNUmber = 1;	
 		    	
+		    	
+		    	int currWindowNUmber = 0;	// for DEBUG
+		    	int totalNumBytesRead = 0;
 		     	
-		    	    
-		        // let record all samples before all gone
-		    	//FIXME: this while  might not be true if num bytes read is differnt from mBufferSize
-		    	 while ( (currWindowNUmber - 1) * mNumSamplesPerBuffer < Parameters.RECORDING_DURATION * mSampleRate) {
+
+		    	//record
+				int currNumBytesRead = mRecorder.read(mCurrentBuffer, 0,  mBufferSize);
+				totalNumBytesRead += currNumBytesRead;
+
+		        // let record all samples
+		    	 while ( totalNumBytesRead < Parameters.RECORDING_DURATION * mSampleRate * numBytesPerSample) {
 		    		 
-			    	//record
-					int currNumBytesRead = mRecorder.read(mCurrentBuffer, 0,  mBufferSize);
+		    		// put mCurrentBuffer in Queue
+					mQueueAudio.add(mCurrentBuffer);
+						
+			    	//record next buffer
+					currNumBytesRead = mRecorder.read(mCurrentBuffer, 0,  mBufferSize);
+					totalNumBytesRead += currNumBytesRead;
+
 					
 					// DEBUG
 					if (currNumBytesRead != mCurrentBuffer.length) {
@@ -158,11 +168,6 @@ public class AudioProcessor {
 							System.out.println(mCurrentBuffer.length);
 
 					}
-					
-					// put mCurrentBuffer in Queue
-					mQueueAudio.add(mCurrentBuffer);
-					
-
 					
 					
 					Log.i(AudioRecordingThread.class.getName(),  " recorded wind " + currWindowNUmber + "with " + currNumBytesRead + "bytes"   );

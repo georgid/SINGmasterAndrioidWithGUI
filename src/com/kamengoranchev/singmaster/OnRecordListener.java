@@ -33,6 +33,7 @@ public class OnRecordListener implements View.OnClickListener {
 	            for (int i = 0; i < numNotes; i++) {
 	            	mMainActivity.mVoiceGraph.setVisibility(View.INVISIBLE);
 	                mMainActivity.mPlayButton.setEnabled(false);
+	                mMainActivity.mRecButton.setEnabled(false);
 	            }
 	        }
 	    });
