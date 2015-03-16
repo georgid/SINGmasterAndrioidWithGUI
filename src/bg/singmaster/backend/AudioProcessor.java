@@ -40,11 +40,16 @@ public class AudioProcessor {
 	
 	
 	// in bytes
-	private int mBufferSize;
+	public int mBufferSize;
 	
 	
 	private byte[] mCurrentBuffer;
+	
+	// queue of audio buffers as soon as recorded buffer comes, pitch extraction listens to queue to process it
 	Queue<byte[]> mQueueAudio;
+	
+	// list of audio bufers after processed from queue store here for playback
+	LinkedList<byte[]> mRecordedAudio;
 	
 	private int mNumSamplesPerBuffer;
 	public int numBytesPerSample;
@@ -92,7 +97,6 @@ public class AudioProcessor {
 				AudioFormat.ENCODING_PCM_16BIT,
 				mBufferSize);
 		
-				
 		mTarsosFormat = new be.hogent.tarsos.dsp.AudioFormat(
 				(float)mSampleRate, 16, 1, true, false);
 		
@@ -117,8 +121,10 @@ public class AudioProcessor {
 	      }
 		
 		mRecorder.startRecording();
-		// make sure audio queue is empty
+		
+		// reset audio queue and arrayList
 		this.mQueueAudio = new LinkedList<byte[]>();
+		this.mRecordedAudio = new LinkedList<byte[]>();
 		
 		// recording
 		Thread audioRecordingThread = new Thread(new AudioRecordingThread());
@@ -155,7 +161,8 @@ public class AudioProcessor {
 		    		 
 		    		// put mCurrentBuffer in Queue
 					mQueueAudio.add(mCurrentBuffer);
-						
+					// store for playback
+					mRecordedAudio.add(mCurrentBuffer);
 			    	//record next buffer
 					currNumBytesRead = mRecorder.read(mCurrentBuffer, 0,  mBufferSize);
 					totalNumBytesRead += currNumBytesRead;

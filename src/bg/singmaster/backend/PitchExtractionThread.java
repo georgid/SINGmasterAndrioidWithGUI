@@ -63,8 +63,6 @@ public PitchExtractionThread(MainActivity mainActivity){
 				Date timeAfter = new Date();
 				Log.i(PitchExtractionThread.class.getName(),  ": time to process pitch window: " + String.valueOf(timeAfter.getTime() - timeBefore.getTime() ) );
 				
-				// convert to pitchScale: 
-	//			this.mAudioProcessor.mPitchExtractor.convertToPitchScale();
 			}
 		
 		

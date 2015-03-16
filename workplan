@@ -7,29 +7,27 @@ PRIMARY:
 
 when record pressed a msg : '''processing'''
 
-0.5) reset PitchExtractor.detectedPitchArray on press of record button
 
-0.6) assure correct sequence of pitch values in array DetectedPitchArray()
-
-
+- test what happens if you playsynth audio or REC while play button pressed 
 
 
 1) player 
 
-- Find a way to play in android  raw audio in byte array ( byte []) . Each 2 consecutive bytes make one sample.
-in PCM format, 16-bit, sample rate 8000.
-
-byte [] is part of the recorded audio: bg.singmaster.backend.PitchExtractor.mDetectedPitchArray  
-
-- Develop it as separate android app
-- integrate in SINGmaster and put logic in new class AudioPlayer
+- glitches in byte array ( byte []) . 
+possible reasons: 
+	Each 2 consecutive bytes make one sample?
+	assure correct sequence of pitch values in array DetectedPitchArray()
+	
 
 
-1.5) AudioPlayer.play() tone called on OnPLayListener
-where to put recorded buffers
+4) play buttons on left pane
 
 tempo slider to work
 
+
+
+------------------------
+SECONDARY : 
 
 
 2) test under different processors. 
@@ -42,15 +40,10 @@ take from bg.singmaster.backend.AudioProcessor.AudioProcessingThread
 how much Mhz are needed to ensure realtime recording with at most 3 seconds lag? 
 
 
-4) play buttons on left pane
-playback of example sounds. 
+ 
 
 
 - test with Yin instead. 
-
-------------------------
-SECONDARY : 
-
 
 
 5) no hopping of windows . add hops 
