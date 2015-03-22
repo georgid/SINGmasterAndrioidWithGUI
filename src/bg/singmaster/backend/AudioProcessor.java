@@ -36,7 +36,6 @@ public class AudioProcessor {
 	public be.hogent.tarsos.dsp.AudioFormat mTarsosFormat;
 	public PitchExtractor mPitchExtractor; 
 
-
 	
 	
 	// in bytes
@@ -58,6 +57,7 @@ public class AudioProcessor {
 	
 	public boolean mIsAllAudioProcessed = false;
 	
+	public WavRecorder mWavRecorder; 
 	
 	/*** @deprecated in seconds */
 	public int mLastWindowNum = -1;
@@ -120,15 +120,21 @@ public class AudioProcessor {
 	        return;
 	      }
 		
-		mRecorder.startRecording();
 		
 		// reset audio queue and arrayList
 		this.mQueueAudio = new LinkedList<byte[]>();
 		this.mRecordedAudio = new LinkedList<byte[]>();
+
+		if (this.mWavRecorder == null)
+			this.mWavRecorder = new WavRecorder();
+		mWavRecorder.beginRecording(Parameters.FILE_URI);
+
+		mRecorder.startRecording();
 		
 		// recording
 		Thread audioRecordingThread = new Thread(new AudioRecordingThread());
 		audioRecordingThread.start();
+		
 		
 		// start pitch extraction
 		Thread pitchExtractionThread = new Thread(new PitchExtractionThread(ma));

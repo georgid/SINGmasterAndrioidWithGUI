@@ -189,4 +189,14 @@ public class MainActivity extends Activity {
         mHideHandler.removeCallbacks(mHideRunnable);
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
     }
+    
+ 
+    
+    @Override
+    public void onDestroy() { 
+        super.onDestroy();
+        System.out.println("OnDestroy");
+        mAudioProcessor.mRecorder.release();
+    }
+    
 }
