@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.Date;
@@ -63,6 +65,7 @@ public class AudioProcessor {
 	public int mLastWindowNum = -1;
 	
 	
+	PipedOutputStream mAudioWriter = new PipedOutputStream();
 	
 	
 	/**
@@ -135,9 +138,16 @@ public class AudioProcessor {
 		Thread audioRecordingThread = new Thread(new AudioRecordingThread());
 		audioRecordingThread.start();
 		
+		PipedInputStream audioReadStream = new PipedInputStream();
+		try {
+			mAudioWriter.connect(audioReadStream);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		// start pitch extraction
-		Thread pitchExtractionThread = new Thread(new PitchExtractionThread(ma));
+		Thread pitchExtractionThread = new Thread(new PitchExtractionThread(ma, audioReadStream));
 		pitchExtractionThread.start();
 	}
 	
@@ -164,7 +174,14 @@ public class AudioProcessor {
 
 		        // let record all samples
 		    	 while ( totalNumBytesRead < Parameters.RECORDING_DURATION * mSampleRate * numBytesPerSample) {
-		    		 
+		    		
+		    		try {
+						mAudioWriter.write(mCurrentBuffer,0, currNumBytesRead);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} 
+		    		
 		    		// put mCurrentBuffer in Queue
 					mQueueAudio.add(mCurrentBuffer);
 					// store for playback
