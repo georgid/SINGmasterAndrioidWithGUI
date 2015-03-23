@@ -9,6 +9,7 @@ import bg.singmaster.backend.Parameters;
 import bg.singmaster.backend.ParametersExercise;
 import bg.singmaster.backend.VoicePlaybackThread;
 import bg.singmaster.gui.util.GUIParameters;
+import android.annotation.TargetApi;
 import android.app.DialogFragment;
 import android.util.Log;
 import android.view.*;
@@ -49,8 +50,13 @@ public class OnPlayListener  implements View.OnClickListener {
 
 	        // The first dataset must be input into the graph using setData to replace the placeholder data already there
 		 mMainActivity. mVoiceGraph.setData(new float[][][]{data1},  GUIParameters.minTime, GUIParameters.maxTime, GUIParameters.minCutOffMIDInumber, GUIParameters.maxCutOffMIDInumber);
-		mMainActivity. mVoiceGraph.setVisibility(View.VISIBLE);
 		
+		 mMainActivity.runOnUiThread(new Runnable(){
+			@Override
+			public void run(){
+				mMainActivity. mVoiceGraph.setVisibility(View.VISIBLE);				
+		}
+	});
 		
 		// play audio 
 		VoicePlaybackThread vpt = new VoicePlaybackThread(mMainActivity.mAudioProcessor);
@@ -88,6 +94,7 @@ public class OnPlayListener  implements View.OnClickListener {
 		
 	}
 	
+	@TargetApi(11)
 	private void createDialog(String infoMsg){
 		DialogFragment infoPitchDialog = new MessageDialog(infoMsg);
 		infoPitchDialog.show(mMainActivity.getFragmentManager(), infoMsg);

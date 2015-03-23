@@ -18,6 +18,8 @@ public class PitchExtractor implements PitchDetectionHandler {
 	// external module for pitch extraction
 	public PitchProcessor mPitchProcessor;
 	
+	//in samples: around 100 ms
+	public int mPitchExtractionWindowSize;  
 	
 	// holder of sequence of extracted pitch values
 	public ArrayList<DetectedPitch> mDetectedPitchArray;
@@ -26,16 +28,19 @@ public class PitchExtractor implements PitchDetectionHandler {
 	/**
 	 * constructor. which pitch detection algorithm
 	 * */
-	public PitchExtractor(int sampleRate, int bufferSizeInSamples){
+	public PitchExtractor(int sampleRate){
 		PitchProcessor.PitchEstimationAlgorithm alg = 
 				PitchProcessor.PitchEstimationAlgorithm.AMDF;
 		
 //		PitchProcessor.PitchEstimationAlgorithm alg = 
 //				PitchProcessor.PitchEstimationAlgorithm.FFT_YIN;
 		
+		int approxSize = (int)Math.round(sampleRate * 0.1);
 		
+		// in bytes
+		mPitchExtractionWindowSize = nextPowerOf2(approxSize) * 2;
 		
-		mPitchProcessor = new PitchProcessor(alg, sampleRate, bufferSizeInSamples, this);
+		mPitchProcessor = new PitchProcessor(alg, sampleRate, mPitchExtractionWindowSize, this);
 		
 	}
 	
@@ -49,12 +54,17 @@ public class PitchExtractor implements PitchDetectionHandler {
 		
 		double currTs = audioEvent.getTimeStamp();
 		
-		if (!pitchDetectionResult.isPitched() )
+		if (!pitchDetectionResult.isPitched() ){
+			Log.i("TAG", "time: " + currTs + " no pitch " );
+
 			return;
-		
+		}
+			
 		currPitchInHz = pitchDetectionResult.getPitch();
-		if (currPitchInHz == 0)
+		if (currPitchInHz == 0){
+			Log.i("TAG", "time: " + currTs + " pitch is " + currPitchInHz);
 			return;
+		}
 		
 		DetectedPitch currDetectedPitch = new DetectedPitch(currPitchInHz, currTs );
 		
@@ -69,7 +79,7 @@ public class PitchExtractor implements PitchDetectionHandler {
 		// array initialized on press of record button
 		this.mDetectedPitchArray.add(currDetectedPitch);
 		
-		Log.d("TAG", "pitch is " + currPitchInHz);
+		Log.i("TAG", "time: " + currTs + " pitch is " + currPitchInHz);
 		
 		
 		
@@ -100,5 +110,18 @@ public class PitchExtractor implements PitchDetectionHandler {
 		}
 
 	}
+	
+	/**
+	 * get next power of 2 bigger than a
+	 * */
+	 public int nextPowerOf2(final int a)
+	    {
+	        int b = 1;
+	        while (b < a)
+	        {
+	            b = b << 1;
+	        }
+	        return b;
+	    }
 	
 }

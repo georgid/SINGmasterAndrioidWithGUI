@@ -129,6 +129,7 @@ public class MainActivity extends Activity {
         this.mRecButton = (Button) findViewById(R.id.btn_record);
         
         this.mPlayButton = (Button) findViewById(R.id.btn_play);
+        this.mPlayButton.setEnabled(false);
         
         // TODO: array of buttons, depending on exercise
         ImageButton playSynthButton1 = (ImageButton) findViewById(R.id.btn_playSynth_1);

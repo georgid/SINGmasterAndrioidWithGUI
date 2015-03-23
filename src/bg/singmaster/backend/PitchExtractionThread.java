@@ -1,5 +1,7 @@
 package bg.singmaster.backend;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
@@ -24,18 +26,26 @@ long mTotalNumBytesProcessed;
 //  which is current time window 
 int mCurrWindowNumber;
 
-public PipedInputStream mAudioReadStream;
+public ByteArrayInputStream mAudioIputStream;
 
-public PitchExtractionThread(MainActivity mainActivity, PipedInputStream audioReadStream){
+public PitchExtractionThread(MainActivity mainActivity, ByteArrayOutputStream audioOutputStream){
 	
 	this.mAudioProcessor = mainActivity.mAudioProcessor;
 	mMainActivity = mainActivity;
 
 	this.mTotalNumBytesProcessed = 0;
-	mAudioReadStream = audioReadStream;
+	outputStream2INputStream(audioOutputStream);
 	
 	
 }
+	/**
+	 * convert audio which is read to format for reading for pitch extraction
+	 * */
+	public void outputStream2INputStream(ByteArrayOutputStream audioOutputStream){
+		byte [] rawBytes = audioOutputStream.toByteArray();
+		mAudioIputStream = new ByteArrayInputStream(rawBytes);
+	}
+	
 	/**
 	 * extract pitch for each audioFrame  (buffer) in audio buffer. 
 	 * convert to pitchScale 
@@ -46,57 +56,30 @@ public PitchExtractionThread(MainActivity mainActivity, PipedInputStream audioRe
     	android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
     	
 //    	Log.i("TAG: ", "in PITCH EXTRACTION THREAD!");
-		
+    	Log.i( PitchExtractionThread.class.getName(), "before extraction: buffer size = "  + mAudioIputStream.available());
+
     	
-	while (this.mAudioProcessor.mRecorder.getRecordingState() != this.mAudioProcessor.mRecorder.RECORDSTATE_STOPPED)
+    	int pitchWindowSize = mAudioProcessor.mPitchExtractor.mPitchExtractionWindowSize;
+    	int numBytesRead;
+    	byte [] currAudioBuffer = new byte[pitchWindowSize];
+    	
+//	while (this.mAudioProcessor.mRecorder.getRecordingState() != this.mAudioProcessor.mRecorder.RECORDSTATE_STOPPED)
 		
-		try {
-			while (mAudioReadStream.available() != 0){
-	
+		while ( (numBytesRead = mAudioIputStream.read(currAudioBuffer, 0, pitchWindowSize)) != -1 ){
+
 //				Log.i("TAG: ", "PROCESSING QUEUE!");
-				
-				byte [] currAudioBuffer = new byte[1024];
-				int numBytesRead = mAudioReadStream.read(currAudioBuffer, 0, 1024);
-				
-				// time. only for DEBUG purpose
-				Date timeBefore = new Date();
-				
-				processSingleAudioBuffer(currAudioBuffer, numBytesRead);
-	
-				// time. only for DEBUG purpose
-				Date timeAfter = new Date();
-				Log.i(PitchExtractionThread.class.getName(),  ": time to process pitch window: " + String.valueOf(timeAfter.getTime() - timeBefore.getTime() ) );
-				
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			
+			// time. only for DEBUG purpose
+			Date timeBefore = new Date();
+			
+			processSingleAudioBuffer(currAudioBuffer, numBytesRead);
+
+			// time. only for DEBUG purpose
+			Date timeAfter = new Date();
+			Log.i(PitchExtractionThread.class.getName(),  ": time to process pitch window: " + String.valueOf(timeAfter.getTime() - timeBefore.getTime() ) );
+			
 		}
     	
-    	
-    	
-//		while (this.mAudioProcessor.mRecorder.getRecordingState() != this.mAudioProcessor.mRecorder.RECORDSTATE_STOPPED)
-//			
-//			
-//			// if empty, but still recording, outer loop will get it here
-//			// process sequentially from queue:
-//			while (!this.mAudioProcessor.mQueueAudio.isEmpty()){
-//	
-////				Log.i("TAG: ", "PROCESSING QUEUE!");
-//				
-//				byte [] currAudioBuffer = this.mAudioProcessor.mQueueAudio.poll();
-//				
-//				// time. only for DEBUG purpose
-//				Date timeBefore = new Date();
-//				
-//				processSingleAudioBuffer(currAudioBuffer);
-//	
-//				// time. only for DEBUG purpose
-//				Date timeAfter = new Date();
-//				Log.i(PitchExtractionThread.class.getName(),  ": time to process pitch window: " + String.valueOf(timeAfter.getTime() - timeBefore.getTime() ) );
-//				
-//			}
-		
 		
 		// last audio buffer is processed , set flag
 		mMainActivity.runOnUiThread(new Runnable(){
@@ -107,7 +90,7 @@ public PitchExtractionThread(MainActivity mainActivity, PipedInputStream audioRe
 		}
 		
 		});
-		//		if ( this.mCurrWindowNumber == mLastWindowNum)
+    	Log.i( PitchExtractionThread.class.getName(), "after extraction: buffer size = "  + mAudioIputStream.available());
 		
 	}
 

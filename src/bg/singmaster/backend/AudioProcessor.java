@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.io.RandomAccessFile;
@@ -46,11 +47,7 @@ public class AudioProcessor {
 	
 	private byte[] mCurrentBuffer;
 	
-	// queue of audio buffers as soon as recorded buffer comes, pitch extraction listens to queue to process it
-	Queue<byte[]> mQueueAudio;
-	
-	// list of audio bufers after processed from queue store here for playback
-	LinkedList<byte[]> mRecordedAudio;
+
 	
 	private int mNumSamplesPerBuffer;
 	public int numBytesPerSample;
@@ -65,8 +62,8 @@ public class AudioProcessor {
 	public int mLastWindowNum = -1;
 	
 	
-	PipedOutputStream mAudioWriter = new PipedOutputStream();
-	
+	ByteArrayOutputStream mAudioOutStream = null;
+	Thread mPitchExtractionThread;
 	
 	/**
 	 * constructor
@@ -89,7 +86,7 @@ public class AudioProcessor {
 			mNumSamplesPerBuffer = minBufferSize / numBytesPerSample;
 		}	
 		
-			
+	
 		
 		
 		mCurrentBuffer = new byte[mBufferSize];
@@ -103,7 +100,7 @@ public class AudioProcessor {
 		mTarsosFormat = new be.hogent.tarsos.dsp.AudioFormat(
 				(float)mSampleRate, 16, 1, true, false);
 		
-		mPitchExtractor = new PitchExtractor(mSampleRate, mNumSamplesPerBuffer);
+		mPitchExtractor = new PitchExtractor(mSampleRate);
 		
 		
 	}
@@ -114,7 +111,7 @@ public class AudioProcessor {
 	public void record(MainActivity ma) {
 		// reinitialize output container
 		this.mPitchExtractor.mDetectedPitchArray = new ArrayList<DetectedPitch>(); 
-		
+		this.mAudioOutStream = new ByteArrayOutputStream();
 		
 		 if (mRecorder.getState() != AudioRecord.STATE_INITIALIZED) {
 		        
@@ -124,31 +121,21 @@ public class AudioProcessor {
 	      }
 		
 		
-		// reset audio queue and arrayList
-		this.mQueueAudio = new LinkedList<byte[]>();
-		this.mRecordedAudio = new LinkedList<byte[]>();
-
-		if (this.mWavRecorder == null)
-			this.mWavRecorder = new WavRecorder();
-		mWavRecorder.beginRecording(Parameters.FILE_URI);
-
-		mRecorder.startRecording();
+mRecorder.startRecording();
 		
+//		PipedInputStream audioReadStream = new PipedInputStream();
+//		try {
+//			mAudioWriter.connect(audioReadStream);
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+
 		// recording
-		Thread audioRecordingThread = new Thread(new AudioRecordingThread());
+		Thread audioRecordingThread = new Thread(new AudioRecordingThread(ma));
 		audioRecordingThread.start();
 		
-		PipedInputStream audioReadStream = new PipedInputStream();
-		try {
-			mAudioWriter.connect(audioReadStream);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
-		// start pitch extraction
-		Thread pitchExtractionThread = new Thread(new PitchExtractionThread(ma, audioReadStream));
-		pitchExtractionThread.start();
 	}
 	
 
@@ -157,7 +144,11 @@ public class AudioProcessor {
 	 * record and call pitch extraction
 	 * */
 	public class AudioRecordingThread implements Runnable{
-
+		
+		MainActivity mMainActi;
+		public AudioRecordingThread(	MainActivity ma){
+			mMainActi = ma;
+		}
 		@Override
 		public void run() {
 			 // We're important...
@@ -173,20 +164,14 @@ public class AudioProcessor {
 				totalNumBytesRead += currNumBytesRead;
 
 		        // let record all samples
+				
+				// DEBUG: date: 
+				Date timeBefore = new Date();
 		    	 while ( totalNumBytesRead < Parameters.RECORDING_DURATION * mSampleRate * numBytesPerSample) {
 		    		
-		    		try {
-						mAudioWriter.write(mCurrentBuffer,0, currNumBytesRead);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} 
-		    		
-		    		// put mCurrentBuffer in Queue
-					mQueueAudio.add(mCurrentBuffer);
-					// store for playback
-					mRecordedAudio.add(mCurrentBuffer);
-			    	//record next buffer
+		    		mAudioOutStream.write(mCurrentBuffer,0, currNumBytesRead); 
+		  
+		    		//record next buffer
 					currNumBytesRead = mRecorder.read(mCurrentBuffer, 0,  mBufferSize);
 					totalNumBytesRead += currNumBytesRead;
 
@@ -196,24 +181,28 @@ public class AudioProcessor {
 							System.out.println(currNumBytesRead);
 							System.out.println(" but ");
 							System.out.println(mCurrentBuffer.length);
-
 					}
 					
 					
 					Log.i(AudioRecordingThread.class.getName(),  " recorded wind " + currWindowNUmber + "with " + currNumBytesRead + "bytes"   );
-
-					
-					// extract pitch
-//					Thread pitchDetectThread = new Thread(new PitchExtractionThread(mPitchExtractor, currNumBytesRead / 2, totalNumBytesProcessed, currWindowNUmber));
-//					pitchDetectThread.start();
-//					
-					// update 
+				
+					// update . not needed
 					currWindowNUmber++;
 					
 				}	
+		    	 
+		    	 Date timeAfter = new Date();
+					Log.i(AudioProcessor.class.getName(),  " recordering time: " + String.valueOf(timeAfter.getTime() - timeBefore.getTime() ) );
+
+		    	 
 		    	 // trigger stop of recording process
 		    	 mRecorder.stop();
 		    	 mLastWindowNum = currWindowNUmber -1;
+		    	
+		    	 // once recorded audio, start pitch extraction
+		    	 mPitchExtractionThread = new Thread(new PitchExtractionThread(mMainActi, mAudioOutStream));
+
+		    	 mPitchExtractionThread.start();
 		    	 
 		
 		}// end run

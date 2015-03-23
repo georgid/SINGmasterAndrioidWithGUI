@@ -30,10 +30,12 @@ DetectedArray
 Once all from queue is extracted, runOnGuiThread.enablePlayButton !!!!   
 
 
-
-AudioProcessingThread
+AudioProcessor -->
+	AudioProcessingThread
 ----------------------
-Loop for each processed buffer of audio. 
+
+ByteArrayInputStream mAudioIputStream  - recorded array
+run - Loop to record buffers of audio and put into  mAudioIputStream; once done recording call PitchExtractionThread
 
  
  
@@ -45,6 +47,16 @@ field mainActivity
 int numNotes = 3;
 		
 	onClick(mainActivity.mAudioProcessor.record())
+
+
+PitchExtractionThread
+-------------------------
+
+ByteArrayInputStream mAudioIputStream - raw audio to process, copied from recorded ByteArrayOutputStream
+
+run - while loop to read each window from ByteArrayInputStream. calls for each window: processSingleAudioBuffer( )
+
+processSingleAudioBuffer() - for each window calls mPitchExtractor
 
 
 

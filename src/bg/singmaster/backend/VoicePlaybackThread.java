@@ -1,5 +1,7 @@
 package bg.singmaster.backend;
 
+import java.io.ByteArrayInputStream;
+
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioRecord;
@@ -27,19 +29,24 @@ public VoicePlaybackThread(AudioProcessor audioProc){
 	
 		mAudioTrack = new AudioTrack(AudioManager.STREAM_MUSIC,
 				audioRecord.getSampleRate(), channelConf,
-                              audioRecord.getAudioFormat(), audioProc.mBufferSize,
+                              audioRecord.getAudioFormat(), mAudioProcessor.mBufferSize,
                               AudioTrack.MODE_STREAM);
  
 }
 	
 public void writeAudio() {
 
+	byte [] rawBytes = mAudioProcessor.mAudioOutStream.toByteArray();
+	ByteArrayInputStream audioIputStream = new ByteArrayInputStream(rawBytes);
+		
+	int numBytesRead;
+	byte [] currAudioBuffer = new byte[mAudioProcessor.mBufferSize];
 	
-		for (byte [] currAudioBuffer : this.mAudioProcessor.mRecordedAudio){
+	
+	while ( (numBytesRead = audioIputStream.read(currAudioBuffer, 0, mAudioProcessor.mBufferSize)) != -1 ){
 			
-			mAudioTrack.write(currAudioBuffer, 0, currAudioBuffer.length);
-	
-		}
+			mAudioTrack.write(currAudioBuffer, 0, numBytesRead);
+	}
 
 }
 
