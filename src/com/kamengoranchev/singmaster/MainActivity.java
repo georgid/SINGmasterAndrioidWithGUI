@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.kamengoranchev.singmaster.R;
 
@@ -57,6 +58,7 @@ public class MainActivity extends Activity {
     public GraphView mVoiceGraph;
     public Button mPlayButton;
     public Button mRecButton;
+    public TextView mProcTextView;
     
     public AudioProcessor mAudioProcessor; 
     
@@ -148,8 +150,8 @@ public class MainActivity extends Activity {
         
         this.mPlayButton.setOnClickListener(new OnPlayListener(this) );
         
-
-        
+        this.mProcTextView = (TextView) findViewById(R.id.txt_view_processing);
+        this.mProcTextView.setVisibility(View.INVISIBLE);
         
     
     }

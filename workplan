@@ -2,26 +2,6 @@
 -------------------------------------------
 		WORKPLAN:
 
-
-PRIMARY:
-
-when record pressed a msg : '''processing'''
-
-
-- test what happens if you playsynth audio or REC while play button pressed 
-
-
-1) player 
-
-- glitches in byte array ( byte []) . 
-possible reasons: 
-	Each 2 consecutive bytes make one sample?
-	assure correct sequence of pitch values in array DetectedPitchArray()
-	
-
-
-4) play buttons on left pane
-
 tempo slider to work
 
 

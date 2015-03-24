@@ -41,6 +41,14 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:minWidth="100dp"/>
+
+            <TextView
+                android:id="@+id/txt_view_processing"
+                style="@style/GeneralText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="@string/processing" />
 
             <TextView
                 style="@style/GeneralText"
@@ -186,13 +194,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="1" />
-                
+                
                 <ImageButton
-				    android:id="@+id/btn_playSynth_0"
-				    style="@style/Numbers"
-				    android:layout_width="match_parent"
-				    android:layout_height="match_parent"
-				    android:background="@drawable/play_icon" />
+                    android:id="@+id/btn_playSynth_0"
+                    style="@style/Numbers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/play_icon" />
                 
                 <TextView
                     android:id="@+id/note_1"

@@ -18,7 +18,7 @@ public class PitchExtractor implements PitchDetectionHandler {
 	// external module for pitch extraction
 	public PitchProcessor mPitchProcessor;
 	
-	//in samples: around 100 ms
+	//in samples: 
 	public int mPitchExtractionWindowSize;  
 	
 	// holder of sequence of extracted pitch values
@@ -34,10 +34,10 @@ public class PitchExtractor implements PitchDetectionHandler {
 		
 //		PitchProcessor.PitchEstimationAlgorithm alg = 
 //				PitchProcessor.PitchEstimationAlgorithm.FFT_YIN;
-		
+		// around 100 ms
 		int approxSize = (int)Math.round(sampleRate * 0.1);
 		
-		// in bytes
+		// in bytes. multiply by 2
 		mPitchExtractionWindowSize = nextPowerOf2(approxSize) * 2;
 		
 		mPitchProcessor = new PitchProcessor(alg, sampleRate, mPitchExtractionWindowSize, this);

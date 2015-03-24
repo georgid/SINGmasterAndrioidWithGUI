@@ -21,6 +21,8 @@ import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
+import android.view.View;
+
 import java.util.Queue;
 import java.util.LinkedList;
 
@@ -71,11 +73,12 @@ public class AudioProcessor {
 	public AudioProcessor(int sampleRate) {
 		mSampleRate = sampleRate;
 		
-		// these are same
+//		 these are same
 		int audioFormat = AudioFormat.ENCODING_PCM_16BIT;
 		numBytesPerSample = 2;
 		
-		mNumSamplesPerBuffer  = 512;
+		// around 100 ms
+		mNumSamplesPerBuffer = (int)Math.round(sampleRate * 0.1);
 		
 		// in bytes 
 		int minBufferSize =  AudioRecord.getMinBufferSize(mSampleRate, AudioFormat.CHANNEL_IN_MONO, audioFormat);
@@ -121,13 +124,12 @@ public class AudioProcessor {
 	      }
 		
 		
-mRecorder.startRecording();
+		 mRecorder.startRecording();
 		
 //		PipedInputStream audioReadStream = new PipedInputStream();
 //		try {
 //			mAudioWriter.connect(audioReadStream);
 //		} catch (IOException e) {
-//			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
 
@@ -199,6 +201,14 @@ mRecorder.startRecording();
 		    	 mRecorder.stop();
 		    	 mLastWindowNum = currWindowNUmber -1;
 		    	
+		    	 // inform user that pitch processing starts
+		    	 this.mMainActi.runOnUiThread(new Runnable() {
+		 	        @Override
+		 	        public void run() {
+		 	        		mMainActi.mProcTextView.setVisibility(View.VISIBLE);
+		 	        }
+		 	    });
+		
 		    	 // once recorded audio, start pitch extraction
 		    	 mPitchExtractionThread = new Thread(new PitchExtractionThread(mMainActi, mAudioOutStream));
 

@@ -10,6 +10,7 @@ import java.util.Date;
 import com.kamengoranchev.singmaster.MainActivity;
 
 import android.util.Log;
+import android.view.View;
 import be.hogent.tarsos.dsp.AudioEvent;
 
 
@@ -80,6 +81,8 @@ public PitchExtractionThread(MainActivity mainActivity, ByteArrayOutputStream au
 			
 		}
     	
+		 
+		
 		
 		// last audio buffer is processed , set flag
 		mMainActivity.runOnUiThread(new Runnable(){
@@ -87,6 +90,7 @@ public PitchExtractionThread(MainActivity mainActivity, ByteArrayOutputStream au
 			public void run(){
 			mMainActivity.mPlayButton.setEnabled(true);
 			mMainActivity.mRecButton.setEnabled(true);
+			mMainActivity.mProcTextView.setVisibility(View.INVISIBLE);
 		}
 		
 		});
