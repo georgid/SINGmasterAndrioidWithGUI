@@ -8,7 +8,8 @@ import android.media.AudioTrack;
  * used to synthesize the reference notes code adapted from
  * https://audioprograming
  * .wordpress.com/2012/10/18/a-simple-synth-in-android-step
- * -by-step-guide-using-the-java-sdk/ TODO: organize in class as in
+ * -by-step-guide-using-the-java-sdk/ 
+ * TODO: organize in class as in
  * https://gist.github.com/MasterEx/2784265
  * */
 public class NoteSynthesisThread extends AudioPlaybackThread {
@@ -19,7 +20,7 @@ public class NoteSynthesisThread extends AudioPlaybackThread {
 	// public int synthSampRate = 16000;
 	public int synthSampRate = 8000;
 	int amp = 10000;
-	double mFrequency = 440.f;
+	double mFrequency;
 
 	public int mBuffSize;
 

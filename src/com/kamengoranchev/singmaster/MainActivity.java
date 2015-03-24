@@ -131,10 +131,18 @@ public class MainActivity extends Activity {
         this.mPlayButton = (Button) findViewById(R.id.btn_play);
         this.mPlayButton.setEnabled(false);
         
-        // TODO: array of buttons, depending on exercise
-        ImageButton playSynthButton1 = (ImageButton) findViewById(R.id.btn_playSynth_1);
-        playSynthButton1.setOnClickListener(new OnPlaySynthListener(ParametersExercise.noteMIDIs[0])  );
+        //array of buttons, depending on exercise
         
+        for (int idx =0; idx < ParametersExercise.noteMIDIs.length; idx++){
+        
+        String playButtonName = "btn_playSynth_" + String.valueOf(idx);
+        // get identifier dynamically
+        
+        ImageButton playSynthButton = (ImageButton) findViewById(getResources().getIdentifier(playButtonName, "id", getPackageName()));
+        // put one octave higher since pure sines do not sound well when MIDI < 66
+        int noteMIDI = ParametersExercise.noteMIDIs[idx] + 12;
+        playSynthButton.setOnClickListener(new OnPlaySynthListener(noteMIDI)  );
+        }
 
         this.mRecButton.setOnClickListener(new OnRecordListener(this)  );
         

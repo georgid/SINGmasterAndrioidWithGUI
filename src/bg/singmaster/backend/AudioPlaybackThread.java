@@ -2,7 +2,7 @@ package bg.singmaster.backend;
 
 import android.media.AudioTrack;
 /**
- * base class for playing audio
+ * base class for playing audio. 
  * */
 public class AudioPlaybackThread implements Runnable {
 
@@ -19,7 +19,7 @@ public class AudioPlaybackThread implements Runnable {
      // synth loop 
       writeAudio();
         
-        closeSynthesis();
+        closePlayback();
         
 	}
 	
@@ -28,7 +28,7 @@ public class AudioPlaybackThread implements Runnable {
 	 * */
 	public void writeAudio(){}
 	
-	public void closeSynthesis(){
+	public void closePlayback(){
         mAudioTrack.stop();
         mAudioTrack.release();
 	}
