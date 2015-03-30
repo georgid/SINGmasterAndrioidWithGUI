@@ -116,12 +116,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="5" />
+
                <ImageButton
-				    android:id="@+id/btn_playSynth_2"
-				    style="@style/Numbers"
-				    android:layout_width="match_parent"
-				    android:layout_height="match_parent"
-				    android:background="@drawable/play_icon" />
+                   android:id="@+id/btn_playSynth_2"
+                   style="@style/Numbers"
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent"
+                   android:background="@drawable/play_icon_5" />
 
                 <LinearLayout />
 
@@ -154,13 +155,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="3" />
-				
+				
 				<ImageButton
 				    android:id="@+id/btn_playSynth_1"
 				    style="@style/Numbers"
 				    android:layout_width="match_parent"
 				    android:layout_height="match_parent"
-				    android:background="@drawable/play_icon" />
+				    android:background="@drawable/play_icon_3" />
 				
                 <LinearLayout />
 
@@ -194,13 +195,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="1" />
-                
+                
                 <ImageButton
                     android:id="@+id/btn_playSynth_0"
                     style="@style/Numbers"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:background="@drawable/play_icon" />
+                    android:background="@drawable/play_icon_1" />
                 
                 <TextView
                     android:id="@+id/note_1"
