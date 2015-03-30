@@ -131,7 +131,7 @@ public class MainActivity extends Activity {
         this.mRecButton = (Button) findViewById(R.id.btn_record);
         
         this.mPlayButton = (Button) findViewById(R.id.btn_play);
-        this.mPlayButton.setEnabled(false);
+//        this.mPlayButton.setEnabled(false);
         
         //array of buttons, depending on exercise
         

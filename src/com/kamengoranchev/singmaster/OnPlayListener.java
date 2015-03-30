@@ -2,6 +2,8 @@ package com.kamengoranchev.singmaster;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import bg.singmaster.backend.DetectedPitch;
 import bg.singmaster.backend.NoteSynthesisThread;
@@ -21,10 +23,11 @@ public class OnPlayListener  implements View.OnClickListener {
 	MainActivity mMainActivity;
 	float [] mPitchSeriesTimes;
 	float [] mPitchSeriesMIDIs;
-	
+	Timer mPlayBackTimer;
 	
 	public OnPlayListener(MainActivity mainActivity){
-	this.mMainActivity = mainActivity;	
+	this.mMainActivity = mainActivity;
+	this.mPlayBackTimer = new Timer();
 	
 	}
 	
@@ -33,34 +36,54 @@ public class OnPlayListener  implements View.OnClickListener {
 		
 		
 			
-		ArrayList<DetectedPitch> pitchSeries = mMainActivity.mAudioProcessor.mPitchExtractor.mDetectedPitchArray;
-//		ArrayList<DetectedPitch> pitchSeries = createTestPitchSeries();
-		
-		
-		boolean isPitchSeriesInVisibleInterval; 
-		isPitchSeriesInVisibleInterval = checkDetectedPitch(pitchSeries);
-		if (!isPitchSeriesInVisibleInterval) {
-			return;
-		}
-		// prepare pitch data for screen dimensions
-		pitchSeries2graphData(pitchSeries);
+		 boolean isPitchSeriesInVisibleInterval = visualizePitchContour();
 		 
-		// load pitch data in graph view
-		float[][] data1 = {mPitchSeriesTimes, mPitchSeriesMIDIs };
+		 if (!isPitchSeriesInVisibleInterval) {
+				return;
+			} 
+		 
+		 // This timer has no functionality as timer, but used to force the update of grid to show before playback thread.
+		 mPlayBackTimer.schedule(new TimerTask() {
+	            @Override
+	            public void run() {
+	                
+	            	// play audio 
+	        		VoicePlaybackThread vpt = new VoicePlaybackThread(mMainActivity.mAudioProcessor);
+	        		vpt.run();
+	            }
+	        }, 0);
+		 
+		 
+	
+	}
 
-	        // The first dataset must be input into the graph using setData to replace the placeholder data already there
-		 mMainActivity. mVoiceGraph.setData(new float[][][]{data1},  GUIParameters.minTime, GUIParameters.maxTime, GUIParameters.minCutOffMIDInumber, GUIParameters.maxCutOffMIDInumber);
+	public boolean visualizePitchContour() {
+				ArrayList<DetectedPitch> pitchSeries = mMainActivity.mAudioProcessor.mPitchExtractor.mDetectedPitchArray;
+//				ArrayList<DetectedPitch> pitchSeries = createTestPitchSeries();
+				
+				
+				boolean isPitchSeriesInVisibleInterval; 
+				isPitchSeriesInVisibleInterval = checkDetectedPitch(pitchSeries);
+				
+				// prepare pitch data for screen dimensions
+				pitchSeries2graphData(pitchSeries);
+				 
+				// load pitch data in graph view
+				float[][] data1 = {mPitchSeriesTimes, mPitchSeriesMIDIs };
 		
-		 mMainActivity.runOnUiThread(new Runnable(){
-			@Override
-			public void run(){
-				mMainActivity. mVoiceGraph.setVisibility(View.VISIBLE);				
-		}
-	});
-		
-		// play audio 
-		VoicePlaybackThread vpt = new VoicePlaybackThread(mMainActivity.mAudioProcessor);
-		vpt.run();
+			        // The first dataset must be input into the graph using setData to replace the placeholder data already there
+				 mMainActivity. mVoiceGraph.setData(new float[][][]{data1},  GUIParameters.minTime, GUIParameters.maxTime, GUIParameters.minCutOffMIDInumber, GUIParameters.maxCutOffMIDInumber);
+				
+					
+				  this.mMainActivity.runOnUiThread(new Runnable() {
+				        @Override
+				        public void run() {
+				        
+							mMainActivity. mVoiceGraph.setVisibility(View.VISIBLE);		
+				            
+				        }
+				    });
+				  return isPitchSeriesInVisibleInterval;
 	}
 
 	/**

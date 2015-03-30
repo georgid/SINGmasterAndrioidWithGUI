@@ -30,11 +30,11 @@ public class OnRecordListener implements View.OnClickListener {
 	   this.mMainActivity.runOnUiThread(new Runnable() {
 	        @Override
 	        public void run() {
-	            for (int i = 0; i < numNotes; i++) {
+	        
 	            	mMainActivity.mVoiceGraph.setVisibility(View.INVISIBLE);
 	                mMainActivity.mPlayButton.setEnabled(false);
 	                mMainActivity.mRecButton.setEnabled(false);
-	            }
+	            
 	        }
 	    });
 	
@@ -42,7 +42,7 @@ public class OnRecordListener implements View.OnClickListener {
         
         // get duration t from tempo control TODO
         
-        // wait some time. allow time to singer to prepare
+        // wait some time INITIAL_WAIT_TIME to allow time for singer to prepare
         this.mNoteTimer.schedule(new TimerTask() {
             @Override
             public void run() {

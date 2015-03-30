@@ -1,11 +1,13 @@
 package bg.singmaster.backend;
 
 import java.io.ByteArrayInputStream;
+import java.util.logging.Logger;
 
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioRecord;
 import android.media.AudioTrack;
+import android.util.Log;
 
 public class VoicePlaybackThread extends AudioPlaybackThread{
 
@@ -35,7 +37,12 @@ public VoicePlaybackThread(AudioProcessor audioProc){
 }
 	
 public void writeAudio() {
-
+	
+	if (mAudioProcessor.mAudioOutStream == null){
+		Log.d(VoicePlaybackThread.class.getName(), "no audio to play in mAudioProcessor.mAudioOutStream ");
+		return;
+	}
+	
 	byte [] rawBytes = mAudioProcessor.mAudioOutStream.toByteArray();
 	ByteArrayInputStream audioIputStream = new ByteArrayInputStream(rawBytes);
 		
