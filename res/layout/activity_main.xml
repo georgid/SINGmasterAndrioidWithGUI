@@ -40,6 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+                android:max="1"
                 android:minWidth="100dp"/>
 
             <TextView
@@ -111,18 +112,16 @@
                 style="@style/TableRaw"
                 android:layout_weight="1.0">
 
-                <TextView
+<!--                 <TextView
                     style="@style/Numbers"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="5" />
+                    android:text="5" /> -->
 
                <ImageButton
-                   android:id="@+id/btn_playSynth_2"
-                   style="@style/Numbers"
-                   android:layout_width="match_parent"
-                   android:layout_height="match_parent"
-                   android:background="@drawable/play_icon_5" />
+                    android:id="@+id/btn_playSynth_2"
+				    style="@style/PlaySynthButton"
+					android:background="@drawable/play_icon_5" />
 
                 <LinearLayout />
 
@@ -150,17 +149,15 @@
                 style="@style/TableRaw"
                 android:layout_weight="1.0">
 
-                <TextView
+<!--                 <TextView
                     style="@style/Numbers"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="3" />
-				
+                    android:text="3" /> -->
+				
 				<ImageButton
 				    android:id="@+id/btn_playSynth_1"
-				    style="@style/Numbers"
-				    android:layout_width="match_parent"
-				    android:layout_height="match_parent"
+				    style="@style/PlaySynthButton"
 				    android:background="@drawable/play_icon_3" />
 				
                 <LinearLayout />
@@ -190,17 +187,15 @@
 
              	
                 
-                <TextView
+              <!--   <TextView
                     style="@style/Numbers"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="1" />
-                
+                 -->
                 <ImageButton
                     android:id="@+id/btn_playSynth_0"
-                    style="@style/Numbers"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+             		style="@style/PlaySynthButton"
                     android:background="@drawable/play_icon_1" />
                 
                 <TextView

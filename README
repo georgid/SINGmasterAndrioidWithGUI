@@ -16,7 +16,8 @@ recording from mic works. pitch extraction works and is done realtime.
 tested under API LEVEL 16 (4.1) with device emulator
 
 IMPORTANT: 
-we are using sample rate 8k which only supports in emulator. In device use samplerate to 44.1k for better quality.
+we are using sample rate 8k, because tarsos pitch extraction works decents and with acceptable speed. bigger sampling rates leads to slow extraction.
+NOTE: emulator supports only 8k rate.
 
 SUPPORT for API LEVEL: 
 DialogFragment (class MessageDialog) requires API 11.

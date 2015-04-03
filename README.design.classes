@@ -17,36 +17,29 @@ AudioProcessor
 Main app logic:
 
 fields:
-PitchExtractor
+mPitchExtractor
 mRecorder - android's recording class
-DetectedArray
+mAudioOutStream  - recorded stream
+
 
  method record() - main recording logic: 
 
-1.start AudioProcessingThread. it puts recorded chunks into a queue AudioProcessor.mQueueAudio. 
+1.start AudioRecordingThread. it puts recorded chunks into a byteArray AudioProcessor.mAudioOutStream 
 
-2. Start  PitchExtractionThred. It processes mQueueAudio simultaneously. puts extracted pitch into mDetectedPitchArray
 
-Once all from queue is extracted, runOnGuiThread.enablePlayButton !!!!   
+Once all pitch processed runOnGuiThread.enablePlayButton !!!!   
 
 
 AudioProcessor -->
-	AudioProcessingThread
+	AudioRecordingThread
 ----------------------
 
-ByteArrayInputStream mAudioIputStream  - recorded array
-run - Loop to record buffers of audio and put into  mAudioIputStream; once done recording call PitchExtractionThread
+
+ByteArrayInputStream mAudioIputStream  - 
+run - Loop to record buffers of audio and put into  mAudioOutStream; once done recording call PitchExtractionThread
 
  
  
-
-
-OnRecordListener
--------------------
-field mainActivity
-int numNotes = 3;
-		
-	onClick(mainActivity.mAudioProcessor.record())
 
 
 PitchExtractionThread
@@ -65,10 +58,45 @@ PitchExtractor
  wrapper. calls pitch extraction logic which is in PitchProcessor field
   handles processing related to detection of pitch 
  
- 
 the field 
 mDetectedPitchArray - holds bucket of DetectedPitch entries.
 
+
+
+
+OnRecordListener
+-------------------
+field mainActivity
+int numNotes = 3;
+		
+	onClick(mainActivity.mAudioProcessor.record())
+
+
+
+AudioPlaybackThread
+----------------------------
+Base class to handle thread-logic for playing audio with AudioTrack
+public void writeAudio(){} - method to implement 
+
+
+VoicePLaybackThread
+-------------------------------
+playing of recorded voice
+
+writeAudio() 
+copy raw bytes from  mAudioProcessor.mAudioOutStream to a new ByteArrayInputStream. 
+ Then write buffers from it into AudioTrack   
+
+
+NoteSynthesisThread
+-------------------------------
+playing synth sine waves as reference tones
+
+writeAudio()
+AudioTrack plays sound
+
+generateSamples()
+sound is generated according to sine wave math equation  
 
 
 /com.kamengoranchev.singmaster.MainActivity/src/bg/singmaster/backend/Parameters.java
