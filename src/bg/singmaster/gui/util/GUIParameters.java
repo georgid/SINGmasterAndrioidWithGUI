@@ -5,8 +5,6 @@ import bg.singmaster.backend.ParametersExercise;
 
 public class GUIParameters {
 
-	public static final int minTime = 0;
-	public static final float maxTime = (float) Parameters.RECORDING_DURATION;
 	
 	// -1 semitone to see if below reference tone
 	public static final int minCutOffMIDInumber = ParametersExercise.noteMIDIs[0] - 1;

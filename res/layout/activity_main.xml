@@ -39,17 +39,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
+                android:layout_centerVertical="false"
                 android:max="1"
-                android:minWidth="100dp"/>
-
+                android:minWidth="50dp"/>
+
             <TextView
                 android:id="@+id/txt_view_processing"
                 style="@style/GeneralText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:text="@string/processing" />
+                android:text="@string/processing"
+                android:textColor="@color/orange" />
 
             <TextView
                 style="@style/GeneralText"
@@ -57,8 +58,18 @@
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@id/skb_tempo"
                 android:text="@string/tempo_label"
-                android:layout_centerVertical="true"
+                android:layout_centerVertical="false"
                 android:layout_marginRight="20dp"/>
+
+            <TextView
+                android:id="@+id/tempoState"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/skb_tempo"
+                android:layout_marginRight="15dp"
+                android:text="@string/tmp_state"
+                android:textColor="@color/black" />
 
         </RelativeLayout>
 

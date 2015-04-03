@@ -34,14 +34,17 @@ public class OnRecordListener implements View.OnClickListener {
 	            	mMainActivity.mVoiceGraph.setVisibility(View.INVISIBLE);
 	                mMainActivity.mPlayButton.setEnabled(false);
 	                mMainActivity.mRecButton.setEnabled(false);
+	                mMainActivity.mTempoBar.setEnabled(false);
 	            
 	        }
 	    });
 	
         
         
-        // get duration t from tempo control TODO
-        
+        // get duration t from tempo control. 
+	   // store original tempo (could be changed before com.kamengoranchev.singmaster.OnPlayListener.visualizePitchContour()  is executed)
+       mMainActivity.mOnPlayListener.setMaxWidthGraphView(Parameters.RECORDING_DURATION);
+	   
         // wait some time INITIAL_WAIT_TIME to allow time for singer to prepare
         this.mNoteTimer.schedule(new TimerTask() {
             @Override
@@ -61,7 +64,7 @@ public class OnRecordListener implements View.OnClickListener {
        
         	this.mNoteTimer.schedule( 
         			new NoteTimerTask(noteNum),
-        		 Parameters.INITIAL_WAIT_TIME  * 1000 + noteNum * Parameters.RECORDING_DURATION * 1000/numNotes );
+        		 (Parameters.INITIAL_WAIT_TIME  * 1000) + noteNum * Parameters.RECORDING_DURATION * 1000/numNotes );
 
     
 	}	

@@ -211,7 +211,6 @@ public class AudioProcessor {
 		
 		    	 // once recorded audio, start pitch extraction
 		    	 mPitchExtractionThread = new Thread(new PitchExtractionThread(mMainActi, mAudioOutStream));
-
 		    	 mPitchExtractionThread.start();
 		    	 
 		

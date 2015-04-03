@@ -91,6 +91,7 @@ public PitchExtractionThread(MainActivity mainActivity, ByteArrayOutputStream au
 			mMainActivity.mPlayButton.setEnabled(true);
 			mMainActivity.mRecButton.setEnabled(true);
 			mMainActivity.mProcTextView.setVisibility(View.INVISIBLE);
+			mMainActivity.mTempoBar.setEnabled(true);
 		}
 		
 		});

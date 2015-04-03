@@ -23,6 +23,11 @@ public class OnPlayListener  implements View.OnClickListener {
 	MainActivity mMainActivity;
 	float [] mPitchSeriesTimes;
 	float [] mPitchSeriesMIDIs;
+	int mMaxWidthGraphView = -1;
+	
+	/**
+	 * workaround timer
+	 * */
 	Timer mPlayBackTimer;
 	
 	public OnPlayListener(MainActivity mainActivity){
@@ -31,9 +36,12 @@ public class OnPlayListener  implements View.OnClickListener {
 	
 	}
 	
+	public void setMaxWidthGraphView(int maxWidthGraphView){
+		mMaxWidthGraphView = maxWidthGraphView;
+	}
+	
 	@Override
 	public void onClick(View v) {
-		
 		
 			
 		 boolean isPitchSeriesInVisibleInterval = visualizePitchContour();
@@ -70,9 +78,12 @@ public class OnPlayListener  implements View.OnClickListener {
 				 
 				// load pitch data in graph view
 				float[][] data1 = {mPitchSeriesTimes, mPitchSeriesMIDIs };
-		
+				
+				if (mMaxWidthGraphView == -1){
+					Log.e(OnPlayListener.class.getName(), "maxWidthGraphView not set. Make sure it is set on press of record");
+				}
 			        // The first dataset must be input into the graph using setData to replace the placeholder data already there
-				 mMainActivity. mVoiceGraph.setData(new float[][][]{data1},  GUIParameters.minTime, GUIParameters.maxTime, GUIParameters.minCutOffMIDInumber, GUIParameters.maxCutOffMIDInumber);
+				 mMainActivity. mVoiceGraph.setData(new float[][][]{data1},  0, mMaxWidthGraphView, GUIParameters.minCutOffMIDInumber, GUIParameters.maxCutOffMIDInumber);
 				
 					
 				  this.mMainActivity.runOnUiThread(new Runnable() {

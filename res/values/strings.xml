@@ -6,5 +6,6 @@
     <string name="NS">http://schemas.android.com/apk/res/com.kamengoranchev.singmaster"</string>
     <string name="ok">OK</string>
     <string name="processing">processing...</string>
+    <string name="tmp_state">fast</string>
 
 </resources>

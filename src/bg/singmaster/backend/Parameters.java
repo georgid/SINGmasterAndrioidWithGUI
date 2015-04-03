@@ -11,7 +11,7 @@ public class Parameters {
 
 	
 	// in seconds. depends on tempo
-	public static final int RECORDING_DURATION = 3; 
+	public static int RECORDING_DURATION = ParametersExercise.noteMIDIs.length; 
 	
 	// initial wait time in seconds
 	public static final int INITIAL_WAIT_TIME = 0;

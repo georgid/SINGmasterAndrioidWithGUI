@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.kamengoranchev.singmaster.R;
@@ -59,6 +60,11 @@ public class MainActivity extends Activity {
     public Button mPlayButton;
     public Button mRecButton;
     public TextView mProcTextView;
+    public SeekBar mTempoBar;
+    public TextView mTempoState;
+    
+    public OnPlayListener mOnPlayListener;
+    
     
     public AudioProcessor mAudioProcessor; 
     
@@ -148,11 +154,17 @@ public class MainActivity extends Activity {
 
         this.mRecButton.setOnClickListener(new OnRecordListener(this)  );
         
-        this.mPlayButton.setOnClickListener(new OnPlayListener(this) );
+        mOnPlayListener  = new OnPlayListener(this); 
+        this.mPlayButton.setOnClickListener(mOnPlayListener);
         
         this.mProcTextView = (TextView) findViewById(R.id.txt_view_processing);
         this.mProcTextView.setVisibility(View.INVISIBLE);
         
+        mTempoBar = (SeekBar) findViewById(R.id.skb_tempo);
+        mTempoBar.setProgress(1);
+        mTempoBar.setOnSeekBarChangeListener(new OnTempoChangeListener(this));
+        
+        mTempoState = (TextView) findViewById(R.id.tempoState);
     
     }
 
