@@ -7,5 +7,6 @@
     <string name="ok">OK</string>
     <string name="processing">processing...</string>
     <string name="tmp_state">fast</string>
+    <string name="SINGmaster">SINGmaster</string>
 
 </resources>

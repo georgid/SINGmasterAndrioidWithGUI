@@ -1,4 +1,4 @@
-package com.kamengoranchev.singmaster;
+package bg.singmaster.listeners;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,6 +10,9 @@ import bg.singmaster.backend.NoteSynthesisThread;
 import bg.singmaster.backend.Parameters;
 import bg.singmaster.backend.ParametersExercise;
 import bg.singmaster.backend.VoicePlaybackThread;
+import bg.singmaster.gui.MainActivity;
+import bg.singmaster.gui.MessageDialog;
+import bg.singmaster.gui.Messages;
 import bg.singmaster.gui.util.GUIParameters;
 import android.annotation.TargetApi;
 import android.app.DialogFragment;
@@ -46,6 +49,7 @@ public class OnPlayListener  implements View.OnClickListener {
 			
 		 boolean isPitchSeriesInVisibleInterval = visualizePitchContour();
 		 
+		 //if not visible pitch, dont play sound
 		 if (!isPitchSeriesInVisibleInterval) {
 				return;
 			} 
@@ -68,10 +72,13 @@ public class OnPlayListener  implements View.OnClickListener {
 	public boolean visualizePitchContour() {
 				ArrayList<DetectedPitch> pitchSeries = mMainActivity.mAudioProcessor.mPitchExtractor.mDetectedPitchArray;
 //				ArrayList<DetectedPitch> pitchSeries = createTestPitchSeries();
+//				ArrayList<DetectedPitch> pitchSeries = createTestPitchSeriesOnePitch();
 				
 				
 				boolean isPitchSeriesInVisibleInterval; 
 				isPitchSeriesInVisibleInterval = checkDetectedPitch(pitchSeries);
+				if (!isPitchSeriesInVisibleInterval)
+					return isPitchSeriesInVisibleInterval;
 				
 				// prepare pitch data for screen dimensions
 				pitchSeries2graphData(pitchSeries);
@@ -81,6 +88,8 @@ public class OnPlayListener  implements View.OnClickListener {
 				
 				if (mMaxWidthGraphView == -1){
 					Log.e(OnPlayListener.class.getName(), "maxWidthGraphView not set. Make sure it is set on press of record");
+					System.exit(1);
+					
 				}
 			        // The first dataset must be input into the graph using setData to replace the placeholder data already there
 				 mMainActivity. mVoiceGraph.setData(new float[][][]{data1},  0, mMaxWidthGraphView, GUIParameters.minCutOffMIDInumber, GUIParameters.maxCutOffMIDInumber);
@@ -105,7 +114,12 @@ public class OnPlayListener  implements View.OnClickListener {
 		
 		boolean isPitchSeriesInVisibleInterval = true;
 		// 3 cases
-				if (pitchSeries.size() == 0){
+		if (pitchSeries == null){
+			createDialog(Messages.NoRecordedVoiceMessage);
+			isPitchSeriesInVisibleInterval = false;
+			}
+		// if pitch size is 1, graphView breaks
+		else if (pitchSeries.size() == 0 || pitchSeries.size() == 1 ){
 					Log.e("TAG", "no pitch detected.");
 					
 					createDialog(Messages.NoPitchMessage);
@@ -192,6 +206,21 @@ public class OnPlayListener  implements View.OnClickListener {
 	pistSeries.add(detPitch3);
 		
 		return pistSeries;
+		
+	}
+	
+	
+	public ArrayList<DetectedPitch>  createTestPitchSeriesOnePitch(){
+		ArrayList<DetectedPitch> pistSeries = new ArrayList<DetectedPitch>();
+		
+		double currTs = 0.5;
+		DetectedPitch detPitch= new DetectedPitch(8.0f, currTs);
+		detPitch.setPitchScaleNumber(64.0);
+		pistSeries.add(detPitch);	
+		
+		
+		return pistSeries;
+
 		
 	}
 

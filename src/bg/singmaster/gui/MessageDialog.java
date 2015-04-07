@@ -1,4 +1,6 @@
-package com.kamengoranchev.singmaster;
+package bg.singmaster.gui;
+
+import bg.singmaster.gui.R;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;

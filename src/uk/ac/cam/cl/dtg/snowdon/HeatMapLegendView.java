@@ -18,7 +18,7 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.kamengoranchev.singmaster.R;
+import bg.singmaster.gui.R;
 
 /**
  * HeatMapLegendView is the class for a HeatMap legend. Colours are specified

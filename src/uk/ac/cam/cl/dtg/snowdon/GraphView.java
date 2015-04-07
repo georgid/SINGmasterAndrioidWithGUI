@@ -22,7 +22,7 @@ import android.graphics.Path;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.kamengoranchev.singmaster.R;
+import bg.singmaster.gui.R;
 
 /**
  * GraphView is an abstract base class for graphs in the library. It provides

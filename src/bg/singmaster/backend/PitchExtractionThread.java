@@ -7,11 +7,11 @@ import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.util.Date;
 
-import com.kamengoranchev.singmaster.MainActivity;
 
 import android.util.Log;
 import android.view.View;
 import be.hogent.tarsos.dsp.AudioEvent;
+import bg.singmaster.gui.MainActivity;
 
 
 /**

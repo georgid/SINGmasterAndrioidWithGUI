@@ -2,13 +2,6 @@
 -------------------------------------------
 		WORKPLAN:
 
-tempo slider to work
-
-
-
-------------------------
-SECONDARY : 
-
 
 2) test under different processors. 
 Use logic from singMaster and put in com.kamen… 
@@ -20,7 +13,6 @@ take from bg.singmaster.backend.AudioProcessor.AudioProcessingThread
 how much Mhz are needed to ensure realtime recording with at most 3 seconds lag? 
 
 
- 
 
 
 - test with Yin instead. 
@@ -34,3 +26,7 @@ how much Mhz are needed to ensure realtime recording with at most 3 seconds lag?
 move int numNotes = 3; from OnRecordListener to ParametersExercise
 
 7) increase and test different buffer sizes. small buffer sizes might mean chances of not smooth reading
+
+
+
+When there are longer (e.g. 1 sec) silence region it is not good to just connect dots. 

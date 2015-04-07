@@ -99,6 +99,12 @@ generateSamples()
 sound is generated according to sine wave math equation  
 
 
-/com.kamengoranchev.singmaster.MainActivity/src/bg/singmaster/backend/Parameters.java
+WavRecorder
+------------------------------
+records Audio as wav with no compression. 
+Not used currently
+ 
+
+bg/singmaster/backend/Parameters.java
 -------------------------
 holds settings of how long the exercise should be. 

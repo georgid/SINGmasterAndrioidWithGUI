@@ -1,8 +1,20 @@
-
-
-This is current version of SING-master prototype for android. 
-For more info about the idea of the project refer to:
+This is current version of SING-master app for android. 
+For more info about how to use it and the idea of the project refer to:
 https://www.facebook.com/SINGmasterapp/info
+
+SUPPORT for API LEVEL
+min API 11 (android 3.0 Honeycomb) 
+DialogFragment (class MessageDialog) requires API 11.
+
+not tested on versions above API LEVEL 16 (4.1)!!!
+
+LICENSE: see LICENSE file
+
+
+
+-----------------------------------------
+STATUS:
+recording from mic works. pitch extraction works and is done realtime. 
 
 
 
@@ -10,17 +22,11 @@ Pitch extraction works with AMDF alg from
 http://0110.be/posts/TarsosDSP_on_Android_-_Audio_Processing_in_Java_on_Android
 (PitchDetector example here: https://github.com/srubin/TarsosDSP)
 
------------------------------------------
-STATUS:
-recording from mic works. pitch extraction works and is done realtime. 
-tested under API LEVEL 16 (4.1) with device emulator
 
 IMPORTANT: 
-we are using sample rate 8k, because tarsos pitch extraction works decents and with acceptable speed. bigger sampling rates leads to slow extraction.
+we are using sample rate 8k, because tarsos pitch extraction works decent and with acceptable speed. bigger sampling rates leads to slow extraction.
 NOTE: emulator supports only 8k rate.
 
-SUPPORT for API LEVEL: 
-DialogFragment (class MessageDialog) requires API 11.
 
 -------------------------------------------------
 
@@ -57,7 +63,7 @@ project clean
 kill running app
 restart phone
  
-
+-------------------
 PROBLEMS: 
 
 

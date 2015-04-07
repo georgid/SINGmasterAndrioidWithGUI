@@ -1,4 +1,4 @@
-package com.kamengoranchev.singmaster;
+package bg.singmaster.listeners;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -9,7 +9,9 @@ import android.widget.TextView;
 import bg.singmaster.backend.AudioProcessor;
 import bg.singmaster.backend.Parameters;
 
-import com.kamengoranchev.singmaster.R;
+import bg.singmaster.gui.MainActivity;
+import bg.singmaster.gui.R;
+import bg.singmaster.gui.R.id;
 
 public class OnRecordListener implements View.OnClickListener {
 

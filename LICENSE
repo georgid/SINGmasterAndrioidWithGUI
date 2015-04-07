@@ -1,0 +1,25 @@
+SINGmaster¨ is released under the GPL v.3  as free and open source software. 
+
+For commercial licences please contact:
+joro.dzhambazov@gmail.com
+
+In any derivative work, please include a reference to: 
+https://www.facebook.com/SINGmasterapp
+
+
+Credits: 
+Development: Georgi Dzhambazov, Kamen Goranchev
+Advices: Stepan Bahdikyan, Stanislav Nikolov
+Logo Design: Velizara Dzhambazova
+
+
+Dependencies: 
+Tarsos DSP
+https://github.com/JorenSix/TarsosDSP
+The Average Magnitude Difference (AMDF) pitch estimation algorithm is implemented by Eder Souza and adapted for TarsosDSP by Joren Six.
+
+GraphView by
+https://github.com/ucam-cl-dtg/snowdon/tree/master/snowdon/src/uk/ac/cam/cl/dtg/snowdon
+
+
+

@@ -14,6 +14,7 @@ import java.util.Date;
 
 
 import be.hogent.tarsos.dsp.AudioEvent;
+import bg.singmaster.gui.MainActivity;
 import android.content.Intent;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
@@ -26,7 +27,6 @@ import android.view.View;
 import java.util.Queue;
 import java.util.LinkedList;
 
-import com.kamengoranchev.singmaster.MainActivity;
 
 /***
  * 

@@ -1,4 +1,4 @@
-package com.kamengoranchev.singmaster;
+package bg.singmaster.gui;
 
 import android.content.Context;
 import android.graphics.Canvas;

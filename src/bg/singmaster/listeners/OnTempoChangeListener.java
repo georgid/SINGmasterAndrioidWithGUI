@@ -1,7 +1,8 @@
-package com.kamengoranchev.singmaster;
+package bg.singmaster.listeners;
 
 import bg.singmaster.backend.Parameters;
 import bg.singmaster.backend.ParametersExercise;
+import bg.singmaster.gui.MainActivity;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 

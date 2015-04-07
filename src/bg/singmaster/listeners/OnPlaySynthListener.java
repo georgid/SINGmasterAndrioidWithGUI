@@ -1,4 +1,4 @@
-package com.kamengoranchev.singmaster;
+package bg.singmaster.listeners;
 
 import bg.singmaster.backend.NoteSynthesisThread;
 import android.view.View;

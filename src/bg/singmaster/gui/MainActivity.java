@@ -1,4 +1,4 @@
-package com.kamengoranchev.singmaster;
+package bg.singmaster.gui;
 
 import uk.ac.cam.cl.dtg.snowdon.GraphView;
 import android.annotation.TargetApi;
@@ -13,12 +13,16 @@ import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.kamengoranchev.singmaster.R;
+import bg.singmaster.gui.R;
 
 import bg.singmaster.backend.AudioProcessor;
 import bg.singmaster.backend.Parameters;
 import bg.singmaster.backend.ParametersExercise;
 import bg.singmaster.gui.util.SystemUiHider;
+import bg.singmaster.listeners.OnPlayListener;
+import bg.singmaster.listeners.OnPlaySynthListener;
+import bg.singmaster.listeners.OnRecordListener;
+import bg.singmaster.listeners.OnTempoChangeListener;
 
 
 /**

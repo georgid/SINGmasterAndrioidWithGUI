@@ -128,11 +128,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="5" /> -->
-
+
                <ImageButton
-                    android:id="@+id/btn_playSynth_2"
-				    style="@style/PlaySynthButton"
-					android:background="@drawable/play_icon_5" />
+                   android:id="@+id/btn_playSynth_2"
+                   style="@style/PlaySynthButton"
+                   android:background="@drawable/play_icon_5_cropped" />
 
                 <LinearLayout />
 
@@ -165,11 +165,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="3" /> -->
-				
+				
 				<ImageButton
 				    android:id="@+id/btn_playSynth_1"
 				    style="@style/PlaySynthButton"
-				    android:background="@drawable/play_icon_3" />
+				    android:background="@drawable/play_icon_3_cropped" />
 				
                 <LinearLayout />
 
@@ -204,10 +204,11 @@
                     android:layout_height="wrap_content"
                     android:text="1" />
                  -->
+
                 <ImageButton
                     android:id="@+id/btn_playSynth_0"
-             		style="@style/PlaySynthButton"
-                    android:background="@drawable/play_icon_1" />
+                    style="@style/PlaySynthButton"
+                    android:background="@drawable/play_icon_1_cropped" />
                 
                 <TextView
                     android:id="@+id/note_1"

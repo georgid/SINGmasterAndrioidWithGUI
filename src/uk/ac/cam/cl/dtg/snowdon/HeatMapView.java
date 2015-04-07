@@ -18,7 +18,7 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.kamengoranchev.singmaster.R;
+import bg.singmaster.gui.R;
 
 /**
  * Displays data as a heatmap. Colours, labels and other layout features are
